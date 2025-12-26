@@ -1,37 +1,73 @@
+# ------------------------------------------------------------
+# Editors / OS junk
+# ------------------------------------------------------------
 *~
-*.a
-*.cache
-*.exe
-*.lo
-*.la
-*.o
-*.so
-*.so.?
-*.so.?.?.?
-.deps
-.dirstamp
-.libs
-.vscode
-a.out
+*.swp
+*.swo
+.DS_Store
+.vscode/
+
+# ------------------------------------------------------------
+# Autotools / libtool generated files
+# ------------------------------------------------------------
 Makefile
-/autom4te.cache
-/config.log
-/config.status
-/libtool
-/clients/mapscrn/twmapscrn
-/clients/tw*
+Makefile.in
+aclocal.m4
+autom4te.cache/
+configure
+config.log
+config.status
+config.cache
+config.h
+libtool
+ltmain.sh
+stamp-h1
+
+# If the project generates these under include/, keep them out of git
 /include/config.h
 /include/stamp-h1
+
+# ------------------------------------------------------------
+# Build products
+# ------------------------------------------------------------
+*.o
+*.lo
+*.la
+*.a
+*.so
+*.so.*
+a.out
+*.exe
+
+.deps/
+.libs/
+.dirstamp
+
+# ------------------------------------------------------------
+# Project-specific built outputs (kept from upstream)
+# ------------------------------------------------------------
+/clients/mapscrn/twmapscrn
+/clients/tw*
+/server/mycat
+/server/twdisplay
+/server/twin
+/server/twin_server
+/test/twtest
+
+# ------------------------------------------------------------
+# Generated headers (version/autoconf outputs) from upstream
+# ------------------------------------------------------------
 /include/Tutf/version.h
 /include/Tw/autoconf.h
 /include/Tw/version.h
 /include/twautoconf.h
 /include/twconfig.h
 /include/version.h
-/server/mycat
-/server/twdisplay
-/server/twin
-/server/twin_server
-/scripts/include
-/scripts/txt
-/test/twtest
+
+# ------------------------------------------------------------
+# Staging / packaging dirs you create
+# ------------------------------------------------------------
+/tmp/
+*-pkg/
+*-root/
+*-pak/

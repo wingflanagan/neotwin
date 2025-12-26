@@ -1,4 +1,9 @@
 --------------------------------------------------------------
+NeoTwin - a fork of the Textmode WINdow environment
+--------------------------------------------------------------
+This is a brand-new fork of the excellent Twin TUI desktop. Below is the full text of the original readme. At the moment, the only change is a switch in the default terminal emulator that gets instantiated from the main menu. That's it. But there is plenty more to come, in an attempt to modernize Twin and bring it up to speed with current practice. 
+
+--------------------------------------------------------------
 Twin - a Textmode WINdow environment
 --------------------------------------------------------------
 

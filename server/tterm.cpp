@@ -219,7 +219,7 @@ EXTERN_C byte InitModule(Tmodule m) {
   ColorFill(color, 19, TCOL(tblack, twhite));
   color[14] = color[9] = color[1] = TCOL(tred, twhite);
 
-  if (((shellpath = getenv("SHELL")) || (shellpath = "/bin/sh")) &&
+  if (((shellpath = getenv("SHELL")) || (shellpath = "/bin/bash")) &&
       (default_args[0] = CloneStr(shellpath)) &&
       (default_args[1] =
            (shell = strrchr(shellpath, '/')) ? CloneStr(shell) : CloneStr(shellpath)) &&
