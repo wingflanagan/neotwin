@@ -56,6 +56,9 @@
 String TmpDir;
 String SocketDir;
 
+static void NormalizeShellEnv(void);
+static bool HasExecutable(const char *path);
+
 void NormalizeTime(timevalue *Time) {
   if (Time->Fraction >= FullSEC || Time->Fraction < 0) {
     tany delta = Time->Fraction / FullSEC;
@@ -1165,7 +1168,11 @@ static bool initSocketDir(void) {
 }
 
 bool InitGlobalVariables(void) {
-  return initHOME() && initTmpDir() && initSocketDir();
+  if (!initHOME() || !initTmpDir() || !initSocketDir()) {
+    return false;
+  }
+  NormalizeShellEnv();
+  return true;
 }
 
 udat CopyToSockaddrUn(const char *src, struct sockaddr_un *addr, udat pos) {
@@ -1349,7 +1356,47 @@ static bool SetEnvs(struct passwd *p) {
   snprintf(buf, TW_BIGBUFF, "MAIL=/var/mail/%.*s", (int)(TW_BIGBUFF - 16), p->pw_name);
   putenv(CloneStr(buf));
 #endif
+  NormalizeShellEnv();
   return true;
+}
+
+static void NormalizeShellEnv(void) {
+  const char *shell = getenv("SHELL");
+  if (shell && *shell && strcmp(shell, "sh") && strcmp(shell, "/bin/sh") &&
+      strcmp(shell, "/usr/bin/sh")) {
+    return;
+  }
+
+  const char *target = NULL;
+  if (HasExecutable("/bin/bash")) {
+    target = "/bin/bash";
+  } else if (!shell || !*shell) {
+    target = "/bin/sh";
+  }
+
+  if (!target) {
+    return;
+  }
+
+#if defined(TW_HAVE_SETENV)
+  setenv("SHELL", target, 1);
+#elif defined(TW_HAVE_PUTENV)
+  char buf[TW_BIGBUFF];
+  snprintf(buf, TW_BIGBUFF, "SHELL=%.*s", (int)(TW_BIGBUFF - 7), target);
+  putenv(CloneStr(buf));
+#endif
+}
+
+static bool HasExecutable(const char *path) {
+#if defined(TW_HAVE_UNISTD_H)
+  return access(path, X_OK) == 0;
+#elif defined(TW_HAVE_SYS_STAT_H)
+  struct stat st;
+  return stat(path, &st) == 0 && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH));
+#else
+  (void)path;
+  return false;
+#endif
 }
 
 byte SetServerUid(uldat uid, byte privileges) {
@@ -1530,6 +1577,7 @@ void RunTwEnvRC(void) {
         default: /* parent */
           close(fds[1]);
           ReadTwEnvRC(fds[0]);
+          NormalizeShellEnv();
           close(fds[0]);
           break;
         }

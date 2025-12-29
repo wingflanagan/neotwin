@@ -5,7 +5,7 @@ set -euo pipefail
 # Run this from inside the NTwin source tree (the directory with configure).
 
 PKG_NAME="ntwin"
-PKG_RELEASE="3"          # produces version like 0.9.1-2
+PKG_RELEASE="4"          # produces version like 0.9.1-2
 PREFIX="/usr"            # IMPORTANT: avoids /usr/local baked-in paths
 STAGE_ROOT="/tmp/ntwin-root"
 PKG_ROOT="/tmp/ntwin-pkg"
