@@ -90,7 +90,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-noinst_PROGRAMS = twtest$(EXEEXT)
+noinst_PROGRAMS = ntwtest$(EXEEXT)
 subdir = test
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -113,9 +113,9 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_twtest_OBJECTS = test_stl_chars.$(OBJEXT) test_stl_fmt.$(OBJEXT) \
 	test_stl_utf8.$(OBJEXT) test_stl_vector.$(OBJEXT) \
 	test_main.$(OBJEXT)
-twtest_OBJECTS = $(am_twtest_OBJECTS)
+ntwtest_OBJECTS = $(am_twtest_OBJECTS)
 am__DEPENDENCIES_1 =
-twtest_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwtest_DEPENDENCIES = $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -157,8 +157,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(twtest_SOURCES)
-DIST_SOURCES = $(twtest_SOURCES)
+SOURCES = $(ntwtest_SOURCES)
+DIST_SOURCES = $(ntwtest_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -400,8 +400,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = 
 AM_CPPFLAGS = -I$(top_srcdir)/include
-twtest_SOURCES = test_stl_chars.cpp test_stl_fmt.cpp test_stl_utf8.cpp test_stl_vector.cpp test_main.cpp
-twtest_LDADD = $(LIBTSTL)
+ntwtest_SOURCES = test_stl_chars.cpp test_stl_fmt.cpp test_stl_utf8.cpp test_stl_vector.cpp test_main.cpp
+ntwtest_LDADD = $(LIBTSTL)
 all: all-recursive
 
 .SUFFIXES:
@@ -440,9 +440,9 @@ clean-noinstPROGRAMS:
 	$(am__rm_f) $(noinst_PROGRAMS)
 	test -z "$(EXEEXT)" || $(am__rm_f) $(noinst_PROGRAMS:$(EXEEXT)=)
 
-twtest$(EXEEXT): $(twtest_OBJECTS) $(twtest_DEPENDENCIES) $(EXTRA_twtest_DEPENDENCIES) 
-	@rm -f twtest$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(twtest_OBJECTS) $(twtest_LDADD) $(LIBS)
+ntwtest$(EXEEXT): $(ntwtest_OBJECTS) $(ntwtest_DEPENDENCIES) $(EXTRA_twtest_DEPENDENCIES) 
+	@rm -f ntwtest$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(ntwtest_OBJECTS) $(ntwtest_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

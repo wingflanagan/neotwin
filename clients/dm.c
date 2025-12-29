@@ -48,7 +48,7 @@
 #endif
 
 #if !defined(TW_HAVE_WAIT3) && !defined(TW_HAVE_WAIT4)
-#error both wait3() and wait4() missing! Cannot compile twdm.
+#error both wait3() and wait4() missing! Cannot compile ntwdm.
 #endif
 
 #ifdef BINDIR
@@ -87,25 +87,25 @@ typedef struct s_data {
 static struct s_data user, pass;
 
 static void Usage(void) {
-  fprintf(stderr, "Usage: twdm [OPTIONS]\n"
+  fprintf(stderr, "Usage: ntwdm [OPTIONS]\n"
                   "Currently known options: \n"
                   " -h, --help              display this help and exit\n"
                   " -V, --version           output version information and exit\n"
-                  " -k, --kill              kill twin server upon display detach\n"
+                  " -k, --kill              kill ntwin server upon display detach\n"
                   " -q, --quiet             quiet; suppress diagnostic messages\n"
                   " -1, --one-shot          start at most one session, then exit\n"
-                  " --attach                use \"twattach\" to start display\n"
-                  " --display               use \"twdisplay\" to start display\n"
+                  " --attach                use \"ntwattach\" to start display\n"
+                  " --display               use \"ntwdisplay\" to start display\n"
                   "                             (default unless --hw=tty)\n"
-                  " --envrc                 tell twin to run twenvrc.sh to get environment\n"
-                  " --suidroot              tell twin to keep suid root privileges\n"
-                  " --sgidtty               tell twin to keep sgid tty privileges\n"
+                  " --envrc                 tell ntwin to run twenvrc.sh to get environment\n"
+                  " --suidroot              tell ntwin to keep suid root privileges\n"
+                  " --sgidtty               tell ntwin to keep sgid tty privileges\n"
                   " --title=<title>         set window title\n"
                   " --hw=<arg>              set display hw to use (default: --hw=tty)\n");
 }
 
 static void ShowVersion(void) {
-  fprintf(stdout, "twdm " TWIN_VERSION_STR "\n");
+  fprintf(stdout, "ntwdm " TWIN_VERSION_STR "\n");
 }
 
 static void ParseArgs(void) {
@@ -142,8 +142,8 @@ static void ParseArgs(void) {
       break;
     } else {
       fprintf(stderr,
-              "twdm: unknown option: `%s'\n"
-              "\ttry `twdm --help' for usage summary.\n",
+              "ntwdm: unknown option: `%s'\n"
+              "\ttry `ntwdm --help' for usage summary.\n",
               s);
       exit(1);
     }
@@ -188,16 +188,16 @@ static byte InitServer(void) {
       if (fd[0] != 1)
         close(fd[0]);
 
-      execl(BINDIR_PREFIX "twin", "twin", "--secure", "--nohw", TwEnvRC, NULL);
-      execlp("twin", "twin", "--secure", "--nohw", TwEnvRC, NULL);
-      fprintf(stderr, "twdm: exec(twin) failed: %s\n", strerror(errno));
+      execl(BINDIR_PREFIX "ntwin", "ntwin", "--secure", "--nohw", TwEnvRC, NULL);
+      execlp("ntwin", "ntwin", "--secure", "--nohw", TwEnvRC, NULL);
+      fprintf(stderr, "ntwdm: exec(ntwin) failed: %s\n", strerror(errno));
       exit(1);
       return tfalse;
     case (pid_t)-1:
       /* error */
       close(fd[0]);
       close(fd[1]);
-      fprintf(stderr, "twdm: fork() failed: %s\n", strerror(errno));
+      fprintf(stderr, "ntwdm: fork() failed: %s\n", strerror(errno));
       return tfalse;
     default:
       /* parent */
@@ -206,11 +206,11 @@ static byte InitServer(void) {
         i = read(fd[0], buff, 79);
       } while (i < 0 && errno == EINTR);
       close(fd[0]);
-      if (i > 33 && !memcmp(buff, "twin: starting in background as :", 33)) {
+      if (i > 34 && !memcmp(buff, "ntwin: starting in background as :", 34)) {
         while (buff[--i] == '\n')
           ;
         buff[++i] = '\0';
-        DM_Display = buff + (i = 32);
+        DM_Display = buff + (i = 33);
         while (buff[i] && buff[i] != ' ')
           i++;
         if (buff[i]) {
@@ -222,13 +222,13 @@ static byte InitServer(void) {
       }
 
       if (i <= 0)
-        fprintf(stderr, "twdm: read() from twin failed: %s\n", strerror(errno));
+        fprintf(stderr, "ntwdm: read() from ntwin failed: %s\n", strerror(errno));
       else
-        fprintf(stderr, "twdm: error starting twin:\n\t%.*s\n", i, buff);
+        fprintf(stderr, "ntwdm: error starting ntwin:\n\t%.*s\n", i, buff);
 
       return tfalse;
     }
-  fprintf(stderr, "twdm: pipe() failed: %s\n", strerror(errno));
+  fprintf(stderr, "ntwdm: pipe() failed: %s\n", strerror(errno));
   return tfalse;
 }
 
@@ -244,11 +244,11 @@ static byte InitAttach(void) {
   if (use_twdisplay == DM_ATTACH ||
       (use_twdisplay == DM_AUTO && !Tw_option_strcmp(hw_name, "-hw=tty"))) {
 
-    attach = "twattach";
-    path_attach = BINDIR_PREFIX "twattach";
+    attach = "ntwattach";
+    path_attach = BINDIR_PREFIX "ntwattach";
   } else {
-    attach = "twdisplay";
-    path_attach = BINDIR_PREFIX "twdisplay";
+    attach = "ntwdisplay";
+    path_attach = BINDIR_PREFIX "ntwdisplay";
   }
 
   strncpy(buff + 7, DM_Display, 4);
@@ -261,19 +261,19 @@ static byte InitAttach(void) {
     /* child */
     execl(path_attach, attach, "--quiet", buff, hw_name, NULL);
     execlp(attach, attach, "--quiet", buff, hw_name, NULL);
-    fprintf(stderr, "twdm: exec(%s) failed: %s\n", attach, strerror(errno));
+    fprintf(stderr, "ntwdm: exec(%s) failed: %s\n", attach, strerror(errno));
     exit(1);
     return tfalse;
   case (pid_t)-1:
     /* error */
-    fprintf(stderr, "twdm: fork() failed: %s\n", strerror(errno));
+    fprintf(stderr, "ntwdm: fork() failed: %s\n", strerror(errno));
     return tfalse;
   default:
     /* parent */
     break;
   }
 
-  /* sleep a little to let twdisplay start up */
+  /* sleep a little to let ntwdisplay start up */
   shortsleep();
 
   return ttrue;
@@ -623,7 +623,7 @@ int main(int argc, char *argv[]) {
   SetHOME();
 
   if (getuid() != 0) {
-    fprintf(stderr, "Only root wants to run twdm\n");
+    fprintf(stderr, "Only root wants to run ntwdm\n");
     return 1;
   }
 

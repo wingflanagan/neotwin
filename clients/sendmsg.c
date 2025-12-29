@@ -32,7 +32,7 @@ void Usage(void) {
 }
 
 void ShowVersion(void) {
-  fputs("twsendmsg " TWIN_VERSION_STR "\n", stdout);
+  fputs("ntwsendmsg " TWIN_VERSION_STR "\n", stdout);
 }
 
 TW_DECL_MAGIC(sendmsg_magic);

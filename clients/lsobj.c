@@ -59,7 +59,7 @@ void Usage(void) {
 }
 
 void ShowVersion(void) {
-  fputs("twlsobj " TWIN_VERSION_STR "\n", stdout);
+  fputs("ntwlsobj " TWIN_VERSION_STR "\n", stdout);
 }
 
 static void human_print(const char *data, uldat len, byte may_trim) {

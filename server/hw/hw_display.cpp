@@ -108,7 +108,7 @@ static void display_HandleEvent(Tdisplay hw) {
        * should never happen, twdisplay uses libtw calls to manage Selection Requests
        */
       log(ERROR)
-          << "\ntwin: display_HandleEvent(): unexpected SelectionRequest Message from twdisplay!\n";
+          << "\ntwin: display_HandleEvent(): unexpected SelectionRequest Message from ntwdisplay!\n";
 #if 0
             TwinSelectionRequest(event->EventSelectionRequest.Requestor,
                                  event->EventSelectionRequest.ReqPrivate,
@@ -120,7 +120,7 @@ static void display_HandleEvent(Tdisplay hw) {
        * should never happen, twdisplay uses libtw calls to manage Selection Notifies
        */
       log(ERROR)
-          << "\ntwin: display_HandleEvent(): unexpected SelectionNotify Message from twdisplay!\n";
+          << "\ntwin: display_HandleEvent(): unexpected SelectionNotify Message from ntwdisplay!\n";
 #if 0
       TwinSelectionNotify(
           dRequestor, dReqPrivate, event->EventSelectionNotify.Magic,
@@ -137,7 +137,7 @@ static void display_HandleEvent(Tdisplay hw) {
          * and never generates ev_dpy_RedrawVideo events
          */
         log(ERROR) << "\ntwin: display_HandleEvent(): unexpected Display.RedrawVideo Message from "
-                      "twdisplay!\n";
+                      "ntwdisplay!\n";
 #if 0
         if (event->EventDisplay.Len == sizeof(dat) * 2) {
           NeedRedrawVideo(hw, event->EventDisplay.X, event->EventDisplay.Y,
@@ -432,13 +432,13 @@ static bool display_InitHW(Tdisplay hw) {
     /*
      * we can't start unless we have a connected twdisplay...
      */
-    log(ERROR) << "      display_InitHW() failed: not connected to twdisplay.\n"
-                  "      (you cannot use -hw=display from command line or twattach)\n";
+    log(ERROR) << "      display_InitHW() failed: not connected to ntwdisplay.\n"
+                  "      (you cannot use -hw=display from command line or ntwattach)\n";
     return false;
   }
 
   if (!(Port = RemoteGetMsgPort(hw->AttachSlot))) {
-    log(ERROR) << "      display_InitHW() failed: twdisplay did not create a MsgPort.\n";
+    log(ERROR) << "      display_InitHW() failed: ntwdisplay did not create a MsgPort.\n";
     return false;
   }
 

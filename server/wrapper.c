@@ -21,7 +21,7 @@
 #define BINDIR "/usr/local/bin"
 #endif
 
-static char bindir_twin_server[] = BINDIR "/twin_server";
+static char bindir_twin_server[] = BINDIR "/ntwin_server";
 
 int main(int argc, char *argv[]) {
   argv[0] = bindir_twin_server;

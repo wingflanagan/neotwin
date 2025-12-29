@@ -108,7 +108,7 @@ int flushk(void) {
 }
 
 static void OutOfMemory(void) {
-  log(ERROR) << "twdisplay: Out of memory!\n";
+  log(ERROR) << "ntwdisplay: Out of memory!\n";
 }
 
 inline uldat FdListGet(void) {
@@ -269,16 +269,16 @@ static bool module_InitHW(Tdisplay hw, Chars arg) {
   if (!alloc_name.format("hw_", name)) {
     Errstr = "Out of memory!";
   } else if (!(m = DlLoadAny(name = alloc_name))) {
-    log(ERROR) << "twdisplay: unable to load display driver module `" << name //
+    log(ERROR) << "ntwdisplay: unable to load display driver module `" << name //
                << "' :\n      " << Errstr << "\n";
   } else {
-    log(INFO) << "twdisplay: starting display driver module `" << name << "'...\n";
+    log(INFO) << "ntwdisplay: starting display driver module `" << name << "'...\n";
 
     bool (*fnInit)(Tdisplay hw);
     if (!(fnInit = m->DoInit) || !fnInit(hw)) {
-      log(ERROR) << "twdisplay: ...module `" << name << "' failed to start.\n";
+      log(ERROR) << "ntwdisplay: ...module `" << name << "' failed to start.\n";
     } else {
-      log(INFO) << "twdisplay: ...module `" << name << "' successfully started.\n";
+      log(INFO) << "ntwdisplay: ...module `" << name << "' successfully started.\n";
       hw->Module = m;
       m->Used++;
       return true;
@@ -317,7 +317,7 @@ static Sdisplay _HW;
 
 void warn_NoHW(uldat len, const char *arg, uldat tried) {
   (void)tried;
-  log(ERROR) << "twdisplay: All display drivers failed";
+  log(ERROR) << "ntwdisplay: All display drivers failed";
   if (arg) {
     log(ERROR) << " for `" << Chars(arg, len) << "'";
   }
@@ -358,7 +358,7 @@ static bool InitDisplay(Tdisplay hw) {
     success = module_InitHW(hw, hw->Name);
   } else {
     success = TRY4("-hw=xft") || TRY4("-hw=X11") || TRY4("-hw=twin") ||
-#if 0 /* cannot use `--hw=display' inside twdisplay! */
+#if 0 /* cannot use `--hw=display' inside ntwdisplay! */
         TRY4("-hw=display") ||
 #endif
               TRY4("-hw=tty");
@@ -407,7 +407,7 @@ static bool IsValidNameHW(Chars carg) NOTHROW {
       /* the rest are options - validated by each display HW */
       break;
     if ((b < '0' || b > '9') && (b < 'A' || b > 'Z') && (b < 'a' || b > 'z') && b != '_') {
-      log(ERROR) << "twdisplay: invalid non-alphanumeric character 0x" << hex(b)
+      log(ERROR) << "ntwdisplay: invalid non-alphanumeric character 0x" << hex(b)
                  << " in display HW name: `" << Chars(arg, len) << "'\n";
       return false;
     }
@@ -418,7 +418,7 @@ static bool IsValidNameHW(Chars carg) NOTHROW {
 static Tdisplay AttachDisplayHW(Chars arg, uldat slot, byte flags) {
   (void)flags;
   if (arg && !arg.starts_with(Chars("-hw="))) {
-    log(ERROR) << "twdisplay: specified `" << arg << "' is not `--hw=<display>'\n";
+    log(ERROR) << "ntwdisplay: specified `" << arg << "' is not `--hw=<display>'\n";
     return NULL;
   }
   Tdisplay hw;
@@ -586,11 +586,11 @@ static void HandleMsg(tmsg msg) {
   switch (msg->Type) {
   case TW_MSG_SELECTION:
     /* should never happen */
-    log(WARNING) << "\ntwdisplay: HandleMsg(): unexpected Selection Message from twin!\n";
+    log(WARNING) << "\nntwdisplay: HandleMsg(): unexpected Selection Message from twin!\n";
     break;
   case TW_MSG_SELECTIONREQUEST:
 #if 0
-    log(INFO) << "twdisplay: Selection Request from 0x"
+    log(INFO) << "ntwdisplay: Selection Request from 0x"
               << hex(msg->Event.EventSelectionRequest.Requestor) << ", owner is underlying HW\n";
 #endif
     /* request selection from underlying HW */
@@ -606,7 +606,7 @@ static void HandleMsg(tmsg msg) {
     break;
   case TW_MSG_SELECTIONNOTIFY:
 #if 0
-    log(INFO) << "twdisplay: Selection Notify to underlying HW\n";
+    log(INFO) << "ntwdisplay: Selection Notify to underlying HW\n";
 #endif
     /* notify selection to underlying HW */
 
@@ -737,7 +737,7 @@ void TwinSelectionSetOwner(Tobj Owner, tany Time, tany Frac) {
 /* HW back-end function: notify selection */
 void TwinSelectionNotify(Tobj Requestor, uldat ReqPrivate, e_id Magic, Chars mime, Chars data) {
 #if 0
-  log(INFO) << "twdisplay: Selection Notify to 0x" << hex((topaque)Requestor) << "\n";
+  log(INFO) << "ntwdisplay: Selection Notify to 0x" << hex((topaque)Requestor) << "\n";
 #endif
   char mimeBuf[TW_MAX_MIMELEN] = {};
   CopyMem(mime.data(), mimeBuf, Min2u(mime.size(), TW_MAX_MIMELEN));
@@ -751,7 +751,7 @@ void TwinSelectionRequest(Tobj Requestor, uldat ReqPrivate, Tobj Owner) {
 #if 1
   (void)Requestor;
 #else
-  log(INFO) << "twdisplay: Selection Request from 0x" << hex((topaque)Requestor) //
+  log(INFO) << "ntwdisplay: Selection Request from 0x" << hex((topaque)Requestor) //
             << ", Owner is 0x" << hex((topaque)Owner);
 #endif
   /* cast back Owner from the fake (Tobj) to (uldat) */
@@ -917,7 +917,7 @@ static void MainLoop(Tdisplay hw, int fd) {
        */
       if (TwGetDisplayWidth() <= 0) {
         QuitDisplay(hw);
-        log(ERROR) << "twdisplay: lost connection to TWIN.. \n";
+        log(ERROR) << "ntwdisplay: lost connection to TWIN.. \n";
         exit(1);
       }
     }
@@ -943,7 +943,7 @@ static void MainLoop(Tdisplay hw, int fd) {
   }
   if (num_fds < 0 && errno != EINTR) {
     QuitDisplay(hw);
-    log(ERROR) << "twdisplay: select(): " << Chars::from_c(strerror(errno)) << "\n";
+    log(ERROR) << "ntwdisplay: select(): " << Chars::from_c(strerror(errno)) << "\n";
     exit(1);
   }
   if (TwInPanic()) {
@@ -975,7 +975,7 @@ dat GetDisplayHeight(void) NOTHROW {
 }
 
 static void Usage(void) NOTHROW {
-  fputs("Usage: twdisplay [OPTIONS]\n"
+  fputs("Usage: ntwdisplay [OPTIONS]\n"
         "Currently known options: \n"
         " -h, --help               display this help and exit\n"
         " -V, --version            output version information and exit\n"
@@ -998,13 +998,13 @@ static void Usage(void) NOTHROW {
 
 static void TryUsage(const char *opt) NOTHROW {
   if (opt) {
-    fprintf(stdout, "twdisplay: unknown option `" SS "'\n", opt);
+    fprintf(stdout, "ntwdisplay: unknown option `" SS "'\n", opt);
   }
-  fputs("           try `twdisplay --help' for usage summary.\n", stdout);
+  fputs("           try `ntwdisplay --help' for usage summary.\n", stdout);
 }
 
 static void ShowVersion(void) NOTHROW {
-  fputs("twdisplay " TWIN_VERSION_STR " with socket protocol " TW_PROTOCOL_VERSION_STR "\n",
+  fputs("ntwdisplay " TWIN_VERSION_STR " with socket protocol " TW_PROTOCOL_VERSION_STR "\n",
         stdout);
 }
 
@@ -1018,12 +1018,12 @@ static bool VersionsMatch(bool force) {
     srv_verstr.format(TW_VER_MAJOR(sv), ".", TW_VER_MINOR(sv), ".", TW_VER_PATCH(sv));
 
     if (force) {
-      log(WARNING) << "twdisplay: warning: socket protocol version mismatch!  (ignored)"
+      log(WARNING) << "ntwdisplay: warning: socket protocol version mismatch!  (ignored)"
                       "\n           client is " TW_PROTOCOL_VERSION_STR ", library is "
                    << lib_verstr << ", server is " << srv_verstr << "\n";
       return false;
     } else {
-      log(ERROR) << "twdisplay: fatal: socket protocol version mismatch!"
+      log(ERROR) << "ntwdisplay: fatal: socket protocol version mismatch!"
                     "\n           client is " TW_PROTOCOL_VERSION_STR ", library is "
                  << lib_verstr << ", server is " << srv_verstr << "\n";
     }
@@ -1096,7 +1096,7 @@ int main(int argc, char *argv[]) {
         } else if (opt[0] == '@' && opt[1]) {
           if (opt[1] == '-') {
             /* using server controlling tty makes no sense for twattach */
-            fprintf(stderr, SS ": `" SS "' makes sense only with twattach.\n", MYname, argi.data());
+            fprintf(stderr, SS ": `" SS "' makes sense only with ntwattach.\n", MYname, argi.data());
             return 1;
           } else if (tty) {
             if (!strcmp(opt + 1, tty)) {
@@ -1128,7 +1128,7 @@ int main(int argc, char *argv[]) {
               strlen(tty) + 9 + strlen(cs) + (term ? 6 + strlen(term) : 0) + (truecolor ? 9 : 0);
           char *arg_alloc = (char *)malloc(arg_hw_len);
           if (!arg_alloc) {
-            fputs("twdisplay: out of memory!\n", stderr);
+            fputs("ntwdisplay: out of memory!\n", stderr);
             return 1;
           }
           snprintf(arg_alloc, arg_hw_len, "-hw=tty%s%s%s%s", (term ? ",TERM=" : term),
@@ -1159,7 +1159,7 @@ int main(int argc, char *argv[]) {
 #ifdef CONF__ALLOC
   /* do this as soon as possible */
   if (!InitAlloc()) {
-    fputs("twdisplay: InitAlloc() failed: internal error!\n", stderr);
+    fputs("ntwdisplay: InitAlloc() failed: internal error!\n", stderr);
     return 1;
   }
 #endif
@@ -1172,11 +1172,11 @@ int main(int argc, char *argv[]) {
   {
     const char *home = getenv("HOME");
     if (!home) {
-      fputs("twdisplay: required environment variable HOME is not set. Aborting.\n", stderr);
+      fputs("ntwdisplay: required environment variable HOME is not set. Aborting.\n", stderr);
       return 1;
     }
     if (!HOME.format(Chars::from_c(home))) { // also append final '\0' but do not count it
-      fputs("twdisplay: out of memory! Aborting.\n", stderr);
+      fputs("ntwdisplay: out of memory! Aborting.\n", stderr);
       return 1;
     }
   }
@@ -1187,7 +1187,7 @@ int main(int argc, char *argv[]) {
 
     if (!force) {
       fprintf(stderr,
-              "twdisplay: refusing to display twin inside itself. Use option `-f' to override.\n");
+              "ntwdisplay: refusing to display twin inside itself. Use option `-f' to override.\n");
       TwClose();
       return 1;
     }
@@ -1206,7 +1206,7 @@ int main(int argc, char *argv[]) {
 
       if (!VersionsMatch(force)) {
         if (!force) {
-          fprintf(stderr, "twdisplay: Aborting. Use option `-f' to ignore versions check.\n");
+          fprintf(stderr, "ntwdisplay: Aborting. Use option `-f' to ignore versions check.\n");
           TwClose();
           return 1;
         }

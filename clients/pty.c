@@ -67,7 +67,7 @@ static int ptyfd, ttyfd;
 
 #ifdef CONF_TERM_DEVPTS
 static void ptyError(const char *d, const char *f, const char *arg) {
-  fprintf(stderr, "twterm: %s: %s(\"%s\") failed: %s\n", d ? d : "<NULL>", f ? f : "<NULL>",
+  fprintf(stderr, "ntwterm: %s: %s(\"%s\") failed: %s\n", d ? d : "<NULL>", f ? f : "<NULL>",
           arg ? arg : "<NULL>", strerror(errno));
 }
 
@@ -139,7 +139,7 @@ static byte getPty(void) {
       }
     }
   }
-  fprintf(stderr, "twterm: failed to get a pty/tty pseudo-tty pair\n");
+  fprintf(stderr, "ntwterm: failed to get a pty/tty pseudo-tty pair\n");
 
 #endif
   return tfalse;

@@ -26,7 +26,7 @@ static tmenu Dialog_Menu;
 static twindow Dialog_Win;
 
 static byte separate_output;
-static const char *title = "twdialog", *backtitle, *text, *input;
+static const char *title = "ntwdialog", *backtitle, *text, *input;
 
 static dat width = 80, height = 25, percent;
 
@@ -43,7 +43,7 @@ static byte (*mode)(void);
 
 static void AllocList(void) {
   if (!(list = (t_list *)malloc(listN * sizeof(t_list)))) {
-    fprintf(stderr, "twdialog: out of memory!\n");
+    fprintf(stderr, "ntwdialog: out of memory!\n");
     exit(1);
   }
 }
@@ -54,10 +54,10 @@ static byte OnOff(char *arg) {
 
 static void Usage(void) {
   fprintf(stderr,
-          "twdialog version 0.1.\n"
+          "ntwdialog version 0.1.\n"
           "Display dialog boxes from shell scripts\n"
           "\n"
-          "Usage: twdialog [--title <title>] [--separate-output] [--backtitle <backtitle>] <Box "
+          "Usage: ntwdialog [--title <title>] [--separate-output] [--backtitle <backtitle>] <Box "
           "options>\n"
           "\n"
           "Box options:\n"

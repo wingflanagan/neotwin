@@ -12,11 +12,11 @@ FIRSTARG=1
 MODE=normal
 DPY=
 
-#echo "twstart: $# arguments [$@]"
+#echo "ntwstart: $# arguments [$@]"
 
 for ARG
 do
-  #echo "twstart: now parsing [$ARG]"
+  #echo "ntwstart: now parsing [$ARG]"
   if [ "$FIRSTARG" = 1 ]; then
     set --
     FIRSTARG=0
@@ -24,9 +24,9 @@ do
   if [ "$MODE" = normal ]; then
     case "$ARG" in
       -h|--help|-help )
-        echo "Usage: twstart [OPTIONS]
+        echo "Usage: ntwstart [OPTIONS]
 Attach a running twin server to a display or start a new server.
-If a twin server is found, \`twdisplay' is used to attach it to a display,
+If a twin server is found, \`ntwdisplay' is used to attach it to a display,
 else a new twin server is started.
 
 Currently known options:
@@ -34,13 +34,13 @@ Currently known options:
  -h, --help            show this help and exit
  --twin@<TWDISPLAY>    specify server to contact instead of autodetecting it
  <TWDISPLAY>           shortcut for --twin@<TWDISPLAY>
- --                    end of options: pass further args to twin or twdisplay
- --<OPTION>            other options are passed verbatim to twin or twdisplay
+ --                    end of options: pass further args to ntwin or ntwdisplay
+ --<OPTION>            other options are passed verbatim to ntwin or ntwdisplay
 "
         exit 0
         ;;
       -- )
-        # end of twstart options, pass the rest to twin or twdisplay
+        # end of ntwstart options, pass the rest to ntwin or ntwdisplay
         MODE=literal
         ;;
       --twin@* )
@@ -57,8 +57,8 @@ Currently known options:
         DPY="$ARG";
         ;;
       * )
-        echo "twstart: unknown option \`$ARG\'
-try \`twstart --help\' for usage summary."
+        echo "ntwstart: unknown option \`$ARG\'
+try \`ntwstart --help\' for usage summary."
         exit 1
         ;;
     esac
@@ -66,19 +66,18 @@ try \`twstart --help\' for usage summary."
     # accumulate current argument
     set -- "$@" "$ARG"
   fi
-  #echo "twstart: accumulated arguments [$@]"
+  #echo "ntwstart: accumulated arguments [$@]"
 done
 
 if [ "$DPY" ]; then
-  DPY="`twfindtwin \"$DPY\"`"
+  DPY="`ntwfindtwin \"$DPY\"`"
 else
-  DPY="`twfindtwin`"
+  DPY="`ntwfindtwin`"
 fi
 
 if [ "$DPY" ]; then
-  echo "twstart: detected twin running on $DPY"
-  exec twdisplay --twin@"$DPY" "$@"
+  echo "ntwstart: detected twin running on $DPY"
+  exec ntwdisplay --twin@"$DPY" "$@"
 else
-  exec twin "$@"
+  exec ntwin "$@"
 fi
-

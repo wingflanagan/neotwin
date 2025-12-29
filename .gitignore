@@ -47,12 +47,12 @@ a.out
 # Project-specific built outputs (kept from upstream)
 # ------------------------------------------------------------
 /clients/mapscrn/twmapscrn
-/clients/tw*
+/clients/ntw*
 /server/mycat
-/server/twdisplay
-/server/twin
-/server/twin_server
-/test/twtest
+/server/ntwdisplay
+/server/ntwin
+/server/ntwin_server
+/test/ntwtest
 
 # ------------------------------------------------------------
 # Generated headers (version/autoconf outputs) from upstream

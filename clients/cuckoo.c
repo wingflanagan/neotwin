@@ -59,7 +59,7 @@ static void Usage(char *name) {
 }
 
 static void ShowVersion(void) {
-  fprintf(stdout, "twcuckoo " TWIN_VERSION_STR "\n");
+  fprintf(stdout, "ntwcuckoo " TWIN_VERSION_STR "\n");
 }
 
 static uldat ReallocBuff(char **buff, uldat min_len) {

@@ -1,8 +1,20 @@
 Begin3
 Title:		twin
-Version:	0.4.9
-Entered-date:	020705
-Description:	a Text mode WINdow environment.
+Version:	0.9.1-neo.1
+Entered-date:	251226
+Description:	A fork of Twin - a Text mode WINdow environment.
+		At this point, it will remain compatible with Twin, but with various tweaks and fixes.
+		At some point, it will become its own app and diverge significantly. Think Neovim.
+		There are plans to revamp the windowing system, create a user-config interface, a new 
+        config file format, user-editable menus, etc.
+		Ultimately, it will become a full TUI desktop - limited, of course, to hosting 
+        text-mode applications.
+		The intended use case is for development using remote dev environments, but without 
+        the weight, bandwidth, and security requirements of VNC, RDP, x11 forwarding, etc.
+		It will work over a basic SSH connection, from WSL, on a potato of a laptop or desktop, 
+        and on a Docker/Podman container.
+		Technically, it already does this, but it's lacking the full desktop experience - 
+        or as much of one as a TUI can offer.
 		It has built-in window manager and linux console emulator.
 		Has X11-style networked server capabilities:
 		programs started remotely can connect to twin using sockets.
@@ -10,8 +22,8 @@ Description:	a Text mode WINdow environment.
 		can attach/detach on-the-fly to a display
 		and supports multiple simultaneous displays.
 		VGA font provided for better look.
-Keywords:	twin wm twindows linux
-Author: 	Massimiliano Ghilardi <massimiliano.ghilardi+twin@gmail.com>
+Keywords:	twin neotwin wm twindows linux
+Author: 	John Flanagan <massimiliano.ghilardi+twin@gmail.com>
 Maintained-by:	Massimiliano Ghilardi <massimiliano.ghilardi+twin@gmail.com>
 Primary-site:	https://github.com/cosmos72/twin/
 		1050k twin-0.4.9.tar.gz

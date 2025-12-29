@@ -16,7 +16,7 @@
 int errmsg(tdisplay td) {
   int err;
   if ((err = Tw_Errno(td))) {
-    fprintf(stderr, "twlsmsgport: libtw error: %s%s\n", Tw_StrError(td, err),
+    fprintf(stderr, "ntwlsmsgport: libtw error: %s%s\n", Tw_StrError(td, err),
             Tw_StrErrorDetail(td, err, Tw_ErrnoDetail(td)));
   }
   return !!err;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
       int fl;
       /* data is guaranteed to be correctly aligned */
 
-      printf("twlsmgport: existing twin tmsgports:\n");
+      printf("ntwlsmsgport: existing twin tmsgports:\n");
       while (n--) {
         fl = tfalse;
         printf("0x%x:\t", (unsigned)*data);

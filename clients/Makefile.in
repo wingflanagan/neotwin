@@ -90,12 +90,12 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = twattach$(EXEEXT) twcat$(EXEEXT) twclip$(EXEEXT) \
-	twclutter$(EXEEXT) twcuckoo$(EXEEXT) twdialog$(EXEEXT) \
-	twevent$(EXEEXT) twfindtwin$(EXEEXT) twlsmsgport$(EXEEXT) \
-	twlsobj$(EXEEXT) twsendmsg$(EXEEXT) twsetroot$(EXEEXT) \
-	twsysmon$(EXEEXT) twterm$(EXEEXT) twthreadtest$(EXEEXT)
-sbin_PROGRAMS = twdm$(EXEEXT)
+bin_PROGRAMS = ntwattach$(EXEEXT) ntwcat$(EXEEXT) ntwclip$(EXEEXT) \
+	ntwclutter$(EXEEXT) ntwcuckoo$(EXEEXT) ntwdialog$(EXEEXT) \
+	ntwevent$(EXEEXT) ntwfindtwin$(EXEEXT) ntwlsmsgport$(EXEEXT) \
+	ntwlsobj$(EXEEXT) ntwsendmsg$(EXEEXT) ntwsetroot$(EXEEXT) \
+	ntwsysmon$(EXEEXT) ntwterm$(EXEEXT) ntwthreadtest$(EXEEXT)
+sbin_PROGRAMS = ntwdm$(EXEEXT)
 subdir = clients
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -117,59 +117,59 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(sbindir)"
 PROGRAMS = $(bin_PROGRAMS) $(sbin_PROGRAMS)
 am_twattach_OBJECTS = attach.$(OBJEXT)
-twattach_OBJECTS = $(am_twattach_OBJECTS)
+ntwattach_OBJECTS = $(am_twattach_OBJECTS)
 am__DEPENDENCIES_1 =
-twattach_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwattach_DEPENDENCIES = $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 am_twcat_OBJECTS = cat.$(OBJEXT)
-twcat_OBJECTS = $(am_twcat_OBJECTS)
-twcat_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwcat_OBJECTS = $(am_twcat_OBJECTS)
+ntwcat_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twclip_OBJECTS = clip.$(OBJEXT)
-twclip_OBJECTS = $(am_twclip_OBJECTS)
-twclip_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwclip_OBJECTS = $(am_twclip_OBJECTS)
+ntwclip_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twclutter_OBJECTS = clutter.$(OBJEXT)
-twclutter_OBJECTS = $(am_twclutter_OBJECTS)
-twclutter_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwclutter_OBJECTS = $(am_twclutter_OBJECTS)
+ntwclutter_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twcuckoo_OBJECTS = cuckoo.$(OBJEXT)
-twcuckoo_OBJECTS = $(am_twcuckoo_OBJECTS)
-twcuckoo_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwcuckoo_OBJECTS = $(am_twcuckoo_OBJECTS)
+ntwcuckoo_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twdialog_OBJECTS = dialog.$(OBJEXT)
-twdialog_OBJECTS = $(am_twdialog_OBJECTS)
-twdialog_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwdialog_OBJECTS = $(am_twdialog_OBJECTS)
+ntwdialog_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twdm_OBJECTS = dm.$(OBJEXT)
-twdm_OBJECTS = $(am_twdm_OBJECTS)
-twdm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ntwdm_OBJECTS = $(am_twdm_OBJECTS)
+ntwdm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_twevent_OBJECTS = event.$(OBJEXT) util.$(OBJEXT)
-twevent_OBJECTS = $(am_twevent_OBJECTS)
-twevent_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwevent_OBJECTS = $(am_twevent_OBJECTS)
+ntwevent_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twfindtwin_OBJECTS = findtwin.$(OBJEXT)
-twfindtwin_OBJECTS = $(am_twfindtwin_OBJECTS)
-twfindtwin_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwfindtwin_OBJECTS = $(am_twfindtwin_OBJECTS)
+ntwfindtwin_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twlsmsgport_OBJECTS = lsmsgport.$(OBJEXT)
-twlsmsgport_OBJECTS = $(am_twlsmsgport_OBJECTS)
-twlsmsgport_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwlsmsgport_OBJECTS = $(am_twlsmsgport_OBJECTS)
+ntwlsmsgport_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twlsobj_OBJECTS = lsobj.$(OBJEXT)
-twlsobj_OBJECTS = $(am_twlsobj_OBJECTS)
-twlsobj_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwlsobj_OBJECTS = $(am_twlsobj_OBJECTS)
+ntwlsobj_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twsendmsg_OBJECTS = sendmsg.$(OBJEXT)
-twsendmsg_OBJECTS = $(am_twsendmsg_OBJECTS)
-twsendmsg_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwsendmsg_OBJECTS = $(am_twsendmsg_OBJECTS)
+ntwsendmsg_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twsetroot_OBJECTS = setroot.$(OBJEXT)
-twsetroot_OBJECTS = $(am_twsetroot_OBJECTS)
-twsetroot_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwsetroot_OBJECTS = $(am_twsetroot_OBJECTS)
+ntwsetroot_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twsysmon_OBJECTS = sysmon.$(OBJEXT) util.$(OBJEXT)
-twsysmon_OBJECTS = $(am_twsysmon_OBJECTS)
-twsysmon_DEPENDENCIES = $(am__DEPENDENCIES_1)
+ntwsysmon_OBJECTS = $(am_twsysmon_OBJECTS)
+ntwsysmon_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_twterm_OBJECTS = pty.$(OBJEXT) term.$(OBJEXT) util.$(OBJEXT)
-twterm_OBJECTS = $(am_twterm_OBJECTS)
-twterm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+ntwterm_OBJECTS = $(am_twterm_OBJECTS)
+ntwterm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_twthreadtest_OBJECTS = threadtest.$(OBJEXT)
-twthreadtest_OBJECTS = $(am_twthreadtest_OBJECTS)
-twthreadtest_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+ntwthreadtest_OBJECTS = $(am_twthreadtest_OBJECTS)
+ntwthreadtest_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -214,18 +214,18 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(twattach_SOURCES) $(twcat_SOURCES) $(twclip_SOURCES) \
-	$(twclutter_SOURCES) $(twcuckoo_SOURCES) $(twdialog_SOURCES) \
-	$(twdm_SOURCES) $(twevent_SOURCES) $(twfindtwin_SOURCES) \
-	$(twlsmsgport_SOURCES) $(twlsobj_SOURCES) $(twsendmsg_SOURCES) \
-	$(twsetroot_SOURCES) $(twsysmon_SOURCES) $(twterm_SOURCES) \
-	$(twthreadtest_SOURCES)
-DIST_SOURCES = $(twattach_SOURCES) $(twcat_SOURCES) $(twclip_SOURCES) \
-	$(twclutter_SOURCES) $(twcuckoo_SOURCES) $(twdialog_SOURCES) \
-	$(twdm_SOURCES) $(twevent_SOURCES) $(twfindtwin_SOURCES) \
-	$(twlsmsgport_SOURCES) $(twlsobj_SOURCES) $(twsendmsg_SOURCES) \
-	$(twsetroot_SOURCES) $(twsysmon_SOURCES) $(twterm_SOURCES) \
-	$(twthreadtest_SOURCES)
+SOURCES = $(ntwattach_SOURCES) $(ntwcat_SOURCES) $(ntwclip_SOURCES) \
+	$(ntwclutter_SOURCES) $(ntwcuckoo_SOURCES) $(ntwdialog_SOURCES) \
+	$(ntwdm_SOURCES) $(ntwevent_SOURCES) $(ntwfindtwin_SOURCES) \
+	$(ntwlsmsgport_SOURCES) $(ntwlsobj_SOURCES) $(ntwsendmsg_SOURCES) \
+	$(ntwsetroot_SOURCES) $(ntwsysmon_SOURCES) $(ntwterm_SOURCES) \
+	$(ntwthreadtest_SOURCES)
+DIST_SOURCES = $(ntwattach_SOURCES) $(ntwcat_SOURCES) $(ntwclip_SOURCES) \
+	$(ntwclutter_SOURCES) $(ntwcuckoo_SOURCES) $(ntwdialog_SOURCES) \
+	$(ntwdm_SOURCES) $(ntwevent_SOURCES) $(ntwfindtwin_SOURCES) \
+	$(ntwlsmsgport_SOURCES) $(ntwlsobj_SOURCES) $(ntwsendmsg_SOURCES) \
+	$(ntwsetroot_SOURCES) $(ntwsysmon_SOURCES) $(ntwterm_SOURCES) \
+	$(ntwthreadtest_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -467,38 +467,38 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = mapscrn
 AM_CPPFLAGS = -I$(top_srcdir)/include
-twattach_SOURCES = attach.c
-twcat_SOURCES = cat.c
-twclip_SOURCES = clip.c
-twclutter_SOURCES = clutter.c
-twcuckoo_SOURCES = cuckoo.c
-twdialog_SOURCES = dialog.c
-twdm_SOURCES = dm.c
-twevent_SOURCES = event.c util.c
-twfindtwin_SOURCES = findtwin.c
-twlsmsgport_SOURCES = lsmsgport.c
-twlsobj_SOURCES = lsobj.c
-twsendmsg_SOURCES = sendmsg.c
-twsetroot_SOURCES = setroot.c
-twsysmon_SOURCES = sysmon.c util.c
-twterm_SOURCES = pty.c term.c util.c
-twthreadtest_SOURCES = threadtest.c
-twattach_LDADD = $(LIBTW)
-twcat_LDADD = $(LIBTW)
-twclip_LDADD = $(LIBTW)
-twclutter_LDADD = $(LIBTW)
-twcuckoo_LDADD = $(LIBTW)
-twdialog_LDADD = $(LIBTW)
-twdm_LDADD = $(LIBTW) $(LIBTUTF) $(LIBCRYPT)
-twevent_LDADD = $(LIBTW)
-twfindtwin_LDADD = $(LIBTW)
-twlsmsgport_LDADD = $(LIBTW)
-twlsobj_LDADD = $(LIBTW)
-twsendmsg_LDADD = $(LIBTW)
-twsetroot_LDADD = $(LIBTW)
-twsysmon_LDADD = $(LIBTW)
-twterm_LDADD = $(LIBTW) $(LIBTUTF)
-twthreadtest_LDADD = $(LIBTW) $(LIBPTHREAD)
+ntwattach_SOURCES = attach.c
+ntwcat_SOURCES = cat.c
+ntwclip_SOURCES = clip.c
+ntwclutter_SOURCES = clutter.c
+ntwcuckoo_SOURCES = cuckoo.c
+ntwdialog_SOURCES = dialog.c
+ntwdm_SOURCES = dm.c
+ntwevent_SOURCES = event.c util.c
+ntwfindtwin_SOURCES = findtwin.c
+ntwlsmsgport_SOURCES = lsmsgport.c
+ntwlsobj_SOURCES = lsobj.c
+ntwsendmsg_SOURCES = sendmsg.c
+ntwsetroot_SOURCES = setroot.c
+ntwsysmon_SOURCES = sysmon.c util.c
+ntwterm_SOURCES = pty.c term.c util.c
+ntwthreadtest_SOURCES = threadtest.c
+ntwattach_LDADD = $(LIBTW)
+ntwcat_LDADD = $(LIBTW)
+ntwclip_LDADD = $(LIBTW)
+ntwclutter_LDADD = $(LIBTW)
+ntwcuckoo_LDADD = $(LIBTW)
+ntwdialog_LDADD = $(LIBTW)
+ntwdm_LDADD = $(LIBTW) $(LIBTUTF) $(LIBCRYPT)
+ntwevent_LDADD = $(LIBTW)
+ntwfindtwin_LDADD = $(LIBTW)
+ntwlsmsgport_LDADD = $(LIBTW)
+ntwlsobj_LDADD = $(LIBTW)
+ntwsendmsg_LDADD = $(LIBTW)
+ntwsetroot_LDADD = $(LIBTW)
+ntwsysmon_LDADD = $(LIBTW)
+ntwterm_LDADD = $(LIBTW) $(LIBTUTF)
+ntwthreadtest_LDADD = $(LIBTW) $(LIBPTHREAD)
 all: all-recursive
 
 .SUFFIXES:
@@ -621,69 +621,69 @@ clean-sbinPROGRAMS:
 	$(am__rm_f) $(sbin_PROGRAMS)
 	test -z "$(EXEEXT)" || $(am__rm_f) $(sbin_PROGRAMS:$(EXEEXT)=)
 
-twattach$(EXEEXT): $(twattach_OBJECTS) $(twattach_DEPENDENCIES) $(EXTRA_twattach_DEPENDENCIES) 
-	@rm -f twattach$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twattach_OBJECTS) $(twattach_LDADD) $(LIBS)
+ntwattach$(EXEEXT): $(ntwattach_OBJECTS) $(ntwattach_DEPENDENCIES) $(EXTRA_twattach_DEPENDENCIES) 
+	@rm -f ntwattach$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwattach_OBJECTS) $(ntwattach_LDADD) $(LIBS)
 
-twcat$(EXEEXT): $(twcat_OBJECTS) $(twcat_DEPENDENCIES) $(EXTRA_twcat_DEPENDENCIES) 
-	@rm -f twcat$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twcat_OBJECTS) $(twcat_LDADD) $(LIBS)
+ntwcat$(EXEEXT): $(ntwcat_OBJECTS) $(ntwcat_DEPENDENCIES) $(EXTRA_twcat_DEPENDENCIES) 
+	@rm -f ntwcat$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwcat_OBJECTS) $(ntwcat_LDADD) $(LIBS)
 
-twclip$(EXEEXT): $(twclip_OBJECTS) $(twclip_DEPENDENCIES) $(EXTRA_twclip_DEPENDENCIES) 
-	@rm -f twclip$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twclip_OBJECTS) $(twclip_LDADD) $(LIBS)
+ntwclip$(EXEEXT): $(ntwclip_OBJECTS) $(ntwclip_DEPENDENCIES) $(EXTRA_twclip_DEPENDENCIES) 
+	@rm -f ntwclip$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwclip_OBJECTS) $(ntwclip_LDADD) $(LIBS)
 
-twclutter$(EXEEXT): $(twclutter_OBJECTS) $(twclutter_DEPENDENCIES) $(EXTRA_twclutter_DEPENDENCIES) 
-	@rm -f twclutter$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twclutter_OBJECTS) $(twclutter_LDADD) $(LIBS)
+ntwclutter$(EXEEXT): $(ntwclutter_OBJECTS) $(ntwclutter_DEPENDENCIES) $(EXTRA_twclutter_DEPENDENCIES) 
+	@rm -f ntwclutter$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwclutter_OBJECTS) $(ntwclutter_LDADD) $(LIBS)
 
-twcuckoo$(EXEEXT): $(twcuckoo_OBJECTS) $(twcuckoo_DEPENDENCIES) $(EXTRA_twcuckoo_DEPENDENCIES) 
-	@rm -f twcuckoo$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twcuckoo_OBJECTS) $(twcuckoo_LDADD) $(LIBS)
+ntwcuckoo$(EXEEXT): $(ntwcuckoo_OBJECTS) $(ntwcuckoo_DEPENDENCIES) $(EXTRA_twcuckoo_DEPENDENCIES) 
+	@rm -f ntwcuckoo$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwcuckoo_OBJECTS) $(ntwcuckoo_LDADD) $(LIBS)
 
-twdialog$(EXEEXT): $(twdialog_OBJECTS) $(twdialog_DEPENDENCIES) $(EXTRA_twdialog_DEPENDENCIES) 
-	@rm -f twdialog$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twdialog_OBJECTS) $(twdialog_LDADD) $(LIBS)
+ntwdialog$(EXEEXT): $(ntwdialog_OBJECTS) $(ntwdialog_DEPENDENCIES) $(EXTRA_twdialog_DEPENDENCIES) 
+	@rm -f ntwdialog$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwdialog_OBJECTS) $(ntwdialog_LDADD) $(LIBS)
 
-twdm$(EXEEXT): $(twdm_OBJECTS) $(twdm_DEPENDENCIES) $(EXTRA_twdm_DEPENDENCIES) 
-	@rm -f twdm$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twdm_OBJECTS) $(twdm_LDADD) $(LIBS)
+ntwdm$(EXEEXT): $(ntwdm_OBJECTS) $(ntwdm_DEPENDENCIES) $(EXTRA_twdm_DEPENDENCIES) 
+	@rm -f ntwdm$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwdm_OBJECTS) $(ntwdm_LDADD) $(LIBS)
 
-twevent$(EXEEXT): $(twevent_OBJECTS) $(twevent_DEPENDENCIES) $(EXTRA_twevent_DEPENDENCIES) 
-	@rm -f twevent$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twevent_OBJECTS) $(twevent_LDADD) $(LIBS)
+ntwevent$(EXEEXT): $(ntwevent_OBJECTS) $(ntwevent_DEPENDENCIES) $(EXTRA_twevent_DEPENDENCIES) 
+	@rm -f ntwevent$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwevent_OBJECTS) $(ntwevent_LDADD) $(LIBS)
 
-twfindtwin$(EXEEXT): $(twfindtwin_OBJECTS) $(twfindtwin_DEPENDENCIES) $(EXTRA_twfindtwin_DEPENDENCIES) 
-	@rm -f twfindtwin$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twfindtwin_OBJECTS) $(twfindtwin_LDADD) $(LIBS)
+ntwfindtwin$(EXEEXT): $(ntwfindtwin_OBJECTS) $(ntwfindtwin_DEPENDENCIES) $(EXTRA_twfindtwin_DEPENDENCIES) 
+	@rm -f ntwfindtwin$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwfindtwin_OBJECTS) $(ntwfindtwin_LDADD) $(LIBS)
 
-twlsmsgport$(EXEEXT): $(twlsmsgport_OBJECTS) $(twlsmsgport_DEPENDENCIES) $(EXTRA_twlsmsgport_DEPENDENCIES) 
-	@rm -f twlsmsgport$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twlsmsgport_OBJECTS) $(twlsmsgport_LDADD) $(LIBS)
+ntwlsmsgport$(EXEEXT): $(ntwlsmsgport_OBJECTS) $(ntwlsmsgport_DEPENDENCIES) $(EXTRA_twlsmsgport_DEPENDENCIES) 
+	@rm -f ntwlsmsgport$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwlsmsgport_OBJECTS) $(ntwlsmsgport_LDADD) $(LIBS)
 
-twlsobj$(EXEEXT): $(twlsobj_OBJECTS) $(twlsobj_DEPENDENCIES) $(EXTRA_twlsobj_DEPENDENCIES) 
-	@rm -f twlsobj$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twlsobj_OBJECTS) $(twlsobj_LDADD) $(LIBS)
+ntwlsobj$(EXEEXT): $(ntwlsobj_OBJECTS) $(ntwlsobj_DEPENDENCIES) $(EXTRA_twlsobj_DEPENDENCIES) 
+	@rm -f ntwlsobj$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwlsobj_OBJECTS) $(ntwlsobj_LDADD) $(LIBS)
 
-twsendmsg$(EXEEXT): $(twsendmsg_OBJECTS) $(twsendmsg_DEPENDENCIES) $(EXTRA_twsendmsg_DEPENDENCIES) 
-	@rm -f twsendmsg$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twsendmsg_OBJECTS) $(twsendmsg_LDADD) $(LIBS)
+ntwsendmsg$(EXEEXT): $(ntwsendmsg_OBJECTS) $(ntwsendmsg_DEPENDENCIES) $(EXTRA_twsendmsg_DEPENDENCIES) 
+	@rm -f ntwsendmsg$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwsendmsg_OBJECTS) $(ntwsendmsg_LDADD) $(LIBS)
 
-twsetroot$(EXEEXT): $(twsetroot_OBJECTS) $(twsetroot_DEPENDENCIES) $(EXTRA_twsetroot_DEPENDENCIES) 
-	@rm -f twsetroot$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twsetroot_OBJECTS) $(twsetroot_LDADD) $(LIBS)
+ntwsetroot$(EXEEXT): $(ntwsetroot_OBJECTS) $(ntwsetroot_DEPENDENCIES) $(EXTRA_twsetroot_DEPENDENCIES) 
+	@rm -f ntwsetroot$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwsetroot_OBJECTS) $(ntwsetroot_LDADD) $(LIBS)
 
-twsysmon$(EXEEXT): $(twsysmon_OBJECTS) $(twsysmon_DEPENDENCIES) $(EXTRA_twsysmon_DEPENDENCIES) 
-	@rm -f twsysmon$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twsysmon_OBJECTS) $(twsysmon_LDADD) $(LIBS)
+ntwsysmon$(EXEEXT): $(ntwsysmon_OBJECTS) $(ntwsysmon_DEPENDENCIES) $(EXTRA_twsysmon_DEPENDENCIES) 
+	@rm -f ntwsysmon$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwsysmon_OBJECTS) $(ntwsysmon_LDADD) $(LIBS)
 
-twterm$(EXEEXT): $(twterm_OBJECTS) $(twterm_DEPENDENCIES) $(EXTRA_twterm_DEPENDENCIES) 
-	@rm -f twterm$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twterm_OBJECTS) $(twterm_LDADD) $(LIBS)
+ntwterm$(EXEEXT): $(ntwterm_OBJECTS) $(ntwterm_DEPENDENCIES) $(EXTRA_twterm_DEPENDENCIES) 
+	@rm -f ntwterm$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwterm_OBJECTS) $(ntwterm_LDADD) $(LIBS)
 
-twthreadtest$(EXEEXT): $(twthreadtest_OBJECTS) $(twthreadtest_DEPENDENCIES) $(EXTRA_twthreadtest_DEPENDENCIES) 
-	@rm -f twthreadtest$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(twthreadtest_OBJECTS) $(twthreadtest_LDADD) $(LIBS)
+ntwthreadtest$(EXEEXT): $(ntwthreadtest_OBJECTS) $(ntwthreadtest_DEPENDENCIES) $(EXTRA_twthreadtest_DEPENDENCIES) 
+	@rm -f ntwthreadtest$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ntwthreadtest_OBJECTS) $(ntwthreadtest_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -1071,8 +1071,8 @@ uninstall-am: uninstall-binPROGRAMS uninstall-sbinPROGRAMS
 
 
 install-exec-hook:
-	rm -f            $(DESTDIR)$(bindir)/twdetach
-	$(LN_S) twattach $(DESTDIR)$(bindir)/twdetach
+	rm -f            $(DESTDIR)$(bindir)/ntwdetach
+	$(LN_S) ntwattach $(DESTDIR)$(bindir)/ntwdetach
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

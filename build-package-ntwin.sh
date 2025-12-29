@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Rebuild & repackage Twin as a .deb using DESTDIR + dpkg-deb.
-# Run this from inside the Twin source tree (the directory with configure).
+# Rebuild & repackage NTwin as a .deb using DESTDIR + dpkg-deb.
+# Run this from inside the NTwin source tree (the directory with configure).
 
-PKG_NAME="twin"
+PKG_NAME="ntwin"
 PKG_RELEASE="3"          # produces version like 0.9.1-2
 PREFIX="/usr"            # IMPORTANT: avoids /usr/local baked-in paths
-STAGE_ROOT="/tmp/twin-root"
-PKG_ROOT="/tmp/twin-pkg"
+STAGE_ROOT="/tmp/ntwin-root"
+PKG_ROOT="/tmp/ntwin-pkg"
 
 die() { echo "ERROR: $*" >&2; exit 1; }
 
 # --- sanity checks ---
-[[ -f "./configure" ]] || die "Run this from the Twin source root (missing ./configure)."
+[[ -f "./configure" ]] || die "Run this from the NTwin source root (missing ./configure)."
 
 ARCH="$(dpkg --print-architecture)"
 
@@ -49,7 +49,7 @@ VERSION="$(detect_version)"
 DEB_VERSION="${VERSION}-${PKG_RELEASE}"
 OUT_DEB="/tmp/${PKG_NAME}_${DEB_VERSION}_${ARCH}.deb"
 
-echo "== Twin rebuild & .deb package =="
+echo "== NTwin rebuild & .deb package =="
 echo "Source:   $(pwd)"
 echo "Version:  ${VERSION}"
 echo "Release:  ${PKG_RELEASE}"
@@ -103,15 +103,21 @@ Section: x11
 Priority: optional
 Architecture: ${ARCH}
 Maintainer: Wing <you@example.com>
-Description: Text-mode windowing environment (Twin)
+Description: Text-mode windowing environment (NTwin)
  Text-mode windowing system with overlapping windows, mouse support,
  and networked clients, running entirely in a terminal.
+EOF
+
+# Ensure ldconfig runs via the standard Debian trigger after install.
+cat > "${PKG_ROOT}/DEBIAN/triggers" <<EOF
+activate-noawait ldconfig
 EOF
 
 # Permissions: control files must be owned by root in the package; dpkg-deb can be picky.
 echo ">> Fixing DEBIAN permissions..."
 chmod 0755 "${PKG_ROOT}/DEBIAN"
 chmod 0644 "${PKG_ROOT}/DEBIAN/control"
+chmod 0644 "${PKG_ROOT}/DEBIAN/triggers"
 
 # --- Step 6: build the .deb ---
 echo ">> Building .deb..."
@@ -122,4 +128,4 @@ echo
 echo "✅ Built: ${OUT_DEB}"
 echo "Install with:"
 echo "  sudo dpkg -i ${OUT_DEB}"
-echo "  sudo ldconfig"
+echo "ldconfig will run automatically via dpkg trigger."

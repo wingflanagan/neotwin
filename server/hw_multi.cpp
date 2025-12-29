@@ -120,9 +120,9 @@ void RunNoHW(byte print_info) {
 
         /* if stderr != stdout, also print on stdout (exploited by twdm) */
         if (fstat(1, &s1) != fstat(2, &s2) || s1.st_ino != s2.st_ino)
-          printf("twin: starting in background as %s (pid %d)\n", TWDisplay, (unsigned)child);
+          printf("ntwin: starting in background as %s (pid %d)\n", TWDisplay, (unsigned)child);
 
-        fprintf(stderr, "twin: starting in background as %s (pid %d)\n", TWDisplay,
+        fprintf(stderr, "ntwin: starting in background as %s (pid %d)\n", TWDisplay,
                 (unsigned)child);
       }
       exit(0);
@@ -452,7 +452,7 @@ bool RestartHW(bool verbose) {
     }
   } else if (verbose) {
     log(INFO) << "twin: RestartHW(): All display drivers removed by SuspendHW().\n"
-                 "      No display available for restarting, use twattach or twdisplay.\n";
+                 "      No display available for restarting, use ntwattach or ntwdisplay.\n";
   }
   return ret;
 }
@@ -468,7 +468,7 @@ void SuspendHW(bool verbose) {
   }
   if (verbose && !All->Displays.First) {
     log(INFO) << "twin: SuspendHW(): All display drivers had to be removed\n"
-                 "      since they were attached to clients (twattach/twdisplay).\n"
+                 "      since they were attached to clients (ntwattach/ntwdisplay).\n"
                  "twin: --- STOPPED ---\n";
   }
 }

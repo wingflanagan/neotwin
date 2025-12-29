@@ -376,7 +376,7 @@ static byte InitTerm(void) {
   TwClose();
 
   if ((err = TwErrno))
-    fprintf(stderr, "twterm: libtw error: %s%s\n", TwStrError(err),
+    fprintf(stderr, "ntwterm: libtw error: %s%s\n", TwStrError(err),
             TwStrErrorDetail(err, TwErrnoDetail));
 
   return tfalse;
@@ -418,7 +418,7 @@ static void TwinTermH(void) {
       write(Fd, Event->EventSelectionNotify.Data, Event->EventSelectionNotify.Len);
 
     } else if (msg->Type == TW_MSG_WIDGET_MOUSE) {
-      fprintf(stderr, "twterm: unexpected Mouse event message!\n");
+      fprintf(stderr, "ntwterm: unexpected Mouse event message!\n");
 
     } else if (msg->Type == TW_MSG_WIDGET_GADGET) {
       if (Event->EventGadget.Code == 0 /* Close Code */)
@@ -484,7 +484,7 @@ static void Usage(char *name) {
 }
 
 static void ShowVersion(void) {
-  fputs("twterm " TWIN_VERSION_STR "\n", stdout);
+  fputs("ntwterm " TWIN_VERSION_STR "\n", stdout);
 }
 
 int main(int argc, char *argv[]) {
@@ -588,7 +588,7 @@ int main(int argc, char *argv[]) {
     }
   }
   if ((err = TwErrno)) {
-    fprintf(stderr, "twterm: libtw error: %s%s\n", TwStrError(err),
+    fprintf(stderr, "ntwterm: libtw error: %s%s\n", TwStrError(err),
             TwStrErrorDetail(err, TwErrnoDetail));
     return 1;
   }

@@ -1,7 +1,20 @@
 --------------------------------------------------------------
 NeoTwin - a fork of the Textmode WINdow environment
 --------------------------------------------------------------
-This is a brand-new fork of the excellent Twin TUI desktop. Below is the full text of the original readme. At the moment, the only change is a switch in the default terminal emulator that gets instantiated from the main menu. That's it. But there is plenty more to come, in an attempt to modernize Twin and bring it up to speed with current practice. 
+
+Version 0.9.1-neo.1
+
+This is a brand-new fork of the excellent Twin TUI window manager. Below is the full text of the original readme. At the moment, the only change is a switch in the default terminal emulator that gets instantiated from the main menu. That's it. But there is plenty more to come, in an attempt to modernize Twin and bring it up to speed with current practice, while keeping the almost comical simplicity of a TUI. It's pretty niche, but if you need it, you need it.
+
+At this point, it will remain compatible with Twin, but with various tweaks and fixes. At some point, it will become its own app and diverge significantly. Think Neovim. There are plans to:
+
+ - revamp the windowing system, 
+ - create a user-config interface, 
+ - a new config file format, 
+ - user-editable menus, 
+ - and more...
+
+Ultimately, it will become a full TUI desktop - limited, of course, to hosting text-mode applications. The intended use case is for development using remote dev environments, but without the weight, bandwidth, and security requirements of VNC, RDP, x11 forwarding, etc. It will work over a basic SSH connection, from WSL, on a potato of a laptop or desktop, and on a Docker/Podman container. Technically, it already does this, but it's lacking the full desktop experience - or as much of one as a TUI can offer.
 
 --------------------------------------------------------------
 Twin - a Textmode WINdow environment

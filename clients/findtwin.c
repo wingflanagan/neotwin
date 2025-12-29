@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (!TwCheckMagic(findtwin_magic)) {
-    fprintf(stderr, "twfindtwin: %s%s\n", TwStrError(TwErrno),
+    fprintf(stderr, "ntwfindtwin: %s%s\n", TwStrError(TwErrno),
             TwStrErrorDetail(TwErrno, TwErrnoDetail));
     return 1;
   }
