@@ -1334,7 +1334,7 @@ byte InitRC(void) {
                               /* Mouse  H1  M  Interactive screen */
                               {HOLD_LEFT | PRESS_,
                                "M",
-                               NULL,
+                               M + 12,
                                M + 11,
                                {NULL},
                                {{
@@ -1350,7 +1350,19 @@ byte InitRC(void) {
                                        0,
                                        SCREEN,
                                    },
-                               }}};
+                               }},
+                              /* Mouse 123 WIC Raise */
+                              {HOLD_ANY | RELEASE_,
+                               "WIC",
+                               NULL,
+                               M + 13,
+                               {NULL},
+                               {{
+                                   CTX_WIN | CTX_INSIDE | CTX_CORNER,
+                               }}},
+                              {
+                                  RAISE,
+                              }};
 #define UD_ARROW T_UTF_32_UP_DOWN_ARROW
   static button_vec V[] = {{{'[', ']'}, 0, ttrue, tfalse},
                            {{UD_ARROW, UD_ARROW}, -2, ttrue, tfalse},

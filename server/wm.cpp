@@ -1722,6 +1722,9 @@ static void WManagerH(Tmsgport MsgPort) {
             C->W->Focus();
           }
           DetailCtx(C);
+          if (C->W && IS_WINDOW(C->W) && !(((Twindow)C->W)->Flags & WINDOWFL_MENU)) {
+            RaiseWidget(C->W, tfalse);
+          }
           w = RecursiveFindFocusWidget((Twidget)All->Screens.First);
           if (C->DW && C->DW != w) {
             RecursiveFocusWidget(C->DW);

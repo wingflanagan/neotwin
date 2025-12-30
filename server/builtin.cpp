@@ -822,11 +822,13 @@ const tcolor *ColorFill(tcolor *array, uldat len, tcolor fill) {
 bool InitBuiltin(void) {
   Twindow w;
   const char *greeting = "\n"
-                         "                TWIN              \n"
-                         "     Text WINdows manager " TWIN_VERSION_STR TWIN_VERSION_EXTRA_STR "\n"
-                         "        (UTF-32, truecolor)       \n\n"
-                         "      by Massimiliano Ghilardi    \n\n"
-                         "  https://github.com/cosmos72/twin";
+                         "                   NeoTWIN                 \n"
+                         "        Neo Text WINdows manager " TWIN_VERSION_STR TWIN_VERSION_EXTRA_STR "\n\n"
+                         "               by John Flanagan            \n"
+                         "  https://github.com/wingflanagan/neotwin  \n\n"
+                         "               Forked from TWIN            \n"
+                         "          by Massimiliano Ghilardi         \n"
+                         "      https://github.com/cosmos72/twin";
   uldat grlen = strlen(greeting);
 
   tcolor color_array[42];
@@ -881,7 +883,7 @@ bool InitBuiltin(void) {
                                   ColorFill(color_array, 5, TCOL(tWHITE, twhite)), Builtin_Menu,
                                   TCOL(tblack, twhite), NOCURSOR,
                                   WINDOW_AUTO_KEYS | WINDOW_WANT_MOUSE | WINDOW_DRAG | WINDOW_CLOSE,
-                                  WINDOWFL_USEROWS | WINDOWFL_ROWS_DEFCOL, 36, 13, 0)) &&
+                                  WINDOWFL_USEROWS | WINDOWFL_ROWS_DEFCOL, 45, 14, 0)) &&
 
       (ClockWin = Swindow::Create(Builtin_MsgPort, 5, "Clock", NULL, Builtin_Menu,
                                   TCOL(tyellow, tblue), NOCURSOR, WINDOW_DRAG | WINDOW_CLOSE,
@@ -1000,7 +1002,16 @@ bool InitBuiltin(void) {
     DisplayWin->InstallHook(UpdateDisplayWin, &All->HookDisplay);
     WinList->MapUnMapHook = InstallRemoveWinListHook;
 
-    ButtonOK_About->FillButton(AboutWin, COD_OK, 15, 11, 0, "   OK   ", TCOL(tWHITE, tgreen),
+    dat ok_left = 0;
+    dat inner_width = AboutWin->XWidth;
+    if (!(AboutWin->Flags & WINDOWFL_BORDERLESS) && inner_width >= 2) {
+      inner_width -= 2;
+    }
+    if (inner_width > ButtonOK_About->XWidth) {
+      ok_left = (inner_width - ButtonOK_About->XWidth) / 2;
+    }
+
+    ButtonOK_About->FillButton(AboutWin, COD_OK, ok_left, 11, 0, "   OK   ", TCOL(tWHITE, tgreen),
                                TCOL(tBLACK, tgreen));
 
     ButtonRemove->FillButton(DisplaySubWin, COD_D_REMOVE, 1, 2, 0, " Remove ", TCOL(tWHITE, tgreen),
