@@ -677,6 +677,17 @@ TW_ATTR_HIDDEN void tty_driver::QuitHW(Tdisplay hw) {
   hw->fnQuitHW = NULL;
 
   tty_driver *self = ttydriver(hw);
+  if (self->out) {
+    const char *clear_seq = self->tc[tc_seq_scr_clear];
+    if (clear_seq && *clear_seq) {
+      fputs(clear_seq, self->out);
+    } else if (self->tc_scr_clear) {
+      fputs(self->tc_scr_clear, self->out);
+    } else {
+      fputs("\033[H\033[2J", self->out);
+    }
+    fflush(self->out);
+  }
 
   // destroy tty_name and tty_term
   String().swap(self->tty_name);

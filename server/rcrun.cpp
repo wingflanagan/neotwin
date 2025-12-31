@@ -33,6 +33,7 @@
 #include "rctypes.h"
 #include "rcparse_tab.hpp"
 #include "rcrun.h"
+#include "tty.h"
 
 #ifdef CONF_WM_RC
 #include "rcproto.h"
@@ -76,6 +77,25 @@ static run *Run;         /* list of running queues */
 static run *Sleep;       /* list of sleeping queues */
 static run *Wait;        /* list of waiting-for-window queues */
 static run *Interactive; /* list of waiting-for-interactive-op queues */
+
+static bool IsWheelCode(udat code) {
+  return code == PRESS_WHEEL_REV || code == PRESS_WHEEL_FWD || code == RELEASE_WHEEL_REV ||
+         code == RELEASE_WHEEL_FWD;
+}
+
+static bool SuppressWheelScrollForVterm(const run *r, Twindow w) {
+  if (!r || !r->C.ByMouse || !IsWheelCode(r->C.Code)) {
+    return false;
+  }
+  if (!w || !IS_WINDOW(w) || !W_USE(w, USECONTENTS) || !w->USE.C.TtyData) {
+    return false;
+  }
+  const tty_data *tty = w->USE.C.TtyData;
+  if (!tty || (tty->Backend != TERM_BACKEND_VTERM && !tty->VTerm)) {
+    return false;
+  }
+  return (w->Attr & WINDOW_WANT_MOUSE) != 0;
+}
 
 /* shell-like wildcard pattern matching */
 static byte wildcard_match(cstr p, cstr q) {
@@ -554,8 +574,12 @@ static byte RCSteps(run *r) {
         ResizeFirstScreen(applyflagx(n));
         break;
       case SCROLL:
-        if (w && IS_WINDOW(w))
+        if (w && IS_WINDOW(w)) {
+          if (SuppressWheelScrollForVterm(r, (Twindow)w)) {
+            break;
+          }
           ScrollWindow((Twindow)w, applyflagx(n), applyflagy(n));
+        }
         break;
       case SENDTOSCREEN:
         if (w && IS_WINDOW(w) && screen && n->name) {

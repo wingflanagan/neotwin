@@ -33,6 +33,7 @@
 #include "stl/utf8.h"
 
 #include <vterm.h>
+#include "../libs/vterm/src/vterm_internal.h"
 
 #include <Tw/Tw.h>
 #include <Tw/Twstat.h>
@@ -351,7 +352,12 @@ static void scrollup(tty_data *tty, dat t, dat b, dat nr) {
   /* try to accelerate this */
   if (w == All->Screens.First->Widgets.First) {
     accel = true;
-    flush_tty(tty);
+    if (tty->VTerm && w->YLogic < tty->ScrollBack) {
+      accel = false;
+    }
+    if (accel) {
+      flush_tty(tty);
+    }
   } else {
     dirty_tty(tty, 0, t, tty->SizeX - 1, b - 1);
   }
@@ -1637,15 +1643,15 @@ void ForceKbdFocus(void) {
   (void)TtyKbdFocus(All->Screens.First->FocusW());
 }
 
-static tty_data *common(Twindow w) {
-  tty_data *tty = w->USE.C.TtyData;
-  tty->Win = w; /* in case it's not set yet */
-  if (!tty->SizeX || !tty->SizeY) {
-    return tty;
+static void TtyMaybeFollowOutput(tty_data *tty) {
+  if (!tty || !tty->Win) {
+    return;
   }
-
-  /* scroll YLogic to bottom */
+  Twindow w = tty->Win;
   if (w->YLogic < tty->ScrollBack) {
+    if (tty->VTerm) {
+      return;
+    }
     if (w == All->Screens.First->Widgets.First) {
       ScrollFirstWindow(0, tty->ScrollBack - w->YLogic, ttrue);
     } else {
@@ -1654,6 +1660,16 @@ static tty_data *common(Twindow w) {
       DrawBorderWindow(w, BORDER_RIGHT);
     }
   }
+}
+
+static tty_data *common(Twindow w) {
+  tty_data *tty = w->USE.C.TtyData;
+  tty->Win = w; /* in case it's not set yet */
+  if (!tty->SizeX || !tty->SizeY) {
+    return tty;
+  }
+
+  TtyMaybeFollowOutput(tty);
   /* clear any selection */
   if (w->State & WINDOW_ANYSEL) {
     ClearHilight(w);
@@ -1722,6 +1738,18 @@ static tcell VtermCellToTcell(tty_data *tty, const VTermScreenCell *cell) {
   }
 
   return TCELL(TCOL(fg, bg), rune);
+}
+
+static void VtermSyncModes(tty_data *tty) {
+  if (!tty || !tty->VTerm || !tty->VTerm->state) {
+    return;
+  }
+  const uldat old_flags = tty->Flags;
+  change_flags(tty, TTY_KBDAPPLIC, tty->VTerm->state->mode.keypad);
+  change_flags(tty, TTY_ALTCURSKEYS, tty->VTerm->state->mode.cursor);
+  if ((old_flags ^ tty->Flags) & (TTY_KBDAPPLIC | TTY_ALTCURSKEYS)) {
+    tty->Flags |= TTY_NEEDREFOCUS;
+  }
 }
 
 static int VtermDamage(VTermRect rect, void *user) {
@@ -1982,6 +2010,7 @@ static bool VtermWriteBytes(Twindow w, tty_data *tty, const char *bytes, uldat l
   (void)common(w);
   vterm_input_write(tty->VTerm->vt, bytes, len);
   vterm_screen_flush_damage(tty->VTerm->screen);
+  VtermSyncModes(tty);
   flush_tty(tty);
   return true;
 }
@@ -1996,6 +2025,7 @@ static bool VtermWriteRunes(Twindow w, tty_data *tty, const trune *runes, uldat 
     vterm_input_write(tty->VTerm->vt, seq.data(), seq.size());
   }
   vterm_screen_flush_damage(tty->VTerm->screen);
+  VtermSyncModes(tty);
   flush_tty(tty);
   return true;
 }
@@ -2252,20 +2282,6 @@ bool TtyWriteTCell(Twindow w, dat x, dat y, uldat len, const tcell *text) {
   ldat left = len;
   tcell *dst = tty->Start + y * tty->SizeX + x;
 
-  /* scroll YLogic to bottom */
-  if (w->YLogic < tty->ScrollBack) {
-    if (w == All->Screens.First->Widgets.First) {
-      ScrollFirstWindow(0, tty->ScrollBack - w->YLogic, ttrue);
-    } else {
-      dirty_tty(tty, 0, 0, tty->SizeX - 1, tty->SizeY - 1);
-      w->YLogic = tty->ScrollBack;
-      DrawBorderWindow(w, BORDER_RIGHT);
-    }
-  }
-  /* clear any selection */
-  if (w->State & WINDOW_ANYSEL) {
-    ClearHilight(w);
-  }
   ldat chunk;
   do {
     if (dst >= tty->Split) {
