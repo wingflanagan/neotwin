@@ -32,6 +32,7 @@
 #include "methods.h"
 #include "draw.h"
 #include "remote.h"
+#include "term_backend.h"
 
 #include "dl.h"
 #include "hw.h"
@@ -377,6 +378,14 @@ byte InitHW(void) {
       flag_secure = ttrue;
     } else if (arg == Chars("-envrc")) {
       flag_envrc = ttrue;
+    } else if (arg.starts_with(Chars("--term="))) {
+      if (!TermBackendApplyArg(arg.data() + 7)) {
+        log(WARNING) << "twin: ignoring invalid --term value `" << arg << "'\n";
+      }
+    } else if (arg.starts_with(Chars("-term="))) {
+      if (!TermBackendApplyArg(arg.data() + 6)) {
+        log(WARNING) << "twin: ignoring invalid --term value `" << arg << "'\n";
+      }
     } else if (arg.starts_with(Chars("-hw="))) {
       hwcount++;
     } else if (arg.starts_with(Chars("-plugindir="))) {
@@ -405,6 +414,7 @@ byte InitHW(void) {
    * environment variables (mostly useful for twdm)
    */
   RunTwEnvRC();
+  TermBackendApplyEnvIfUnset();
 
   if (nohw) {
     RunNoHW(ret = ttrue);

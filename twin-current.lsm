@@ -1,6 +1,6 @@
 Begin3
 Title:		twin
-Version:	0.9.1-neo.1
+Version:	0.9.1-neo.2
 Entered-date:	251226
 Description:	A fork of Twin - a Text mode WINdow environment.
 		At this point, it will remain compatible with Twin, but with various tweaks and fixes.

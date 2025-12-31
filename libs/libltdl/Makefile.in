@@ -330,6 +330,7 @@ EGREP = @EGREP@
 ETAGS = @ETAGS@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+FILECMD = @FILECMD@
 GREP = @GREP@
 INCLTDL = @INCLTDL@
 INSTALL = @INSTALL@
@@ -484,7 +485,7 @@ EXTRA_DIST = lt__dirent.c lt__strl.c COPYING.LIB README \
 CLEANFILES = libltdl.la libltdlc.la libdlloader.la $(ltdl_LIBOBJS) \
 	$(ltdl_LTLIBOBJS)
 MOSTLYCLEANFILES = libltdl/lt__argz.h libltdl/lt__argz.h-t
-LTDL_VERSION_INFO = -version-info 10:1:3
+LTDL_VERSION_INFO = -version-info 10:2:3
 @INSTALL_LTDL_TRUE@ltdlincludedir = $(includedir)/libltdl
 @INSTALL_LTDL_TRUE@ltdlinclude_HEADERS = libltdl/lt_system.h \
 @INSTALL_LTDL_TRUE@			  libltdl/lt_error.h \

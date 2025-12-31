@@ -19,6 +19,7 @@
 #include "algo.h"
 #include "alloc.h"
 #include "data.h"
+#include "log.h"
 #include "methods.h"
 #include "palette.h"
 #include "draw.h"
@@ -28,6 +29,10 @@
 #include "hw.h"
 #include "common.h"
 #include "tty.h"
+
+#include "stl/utf8.h"
+
+#include <vterm.h>
 
 #include <Tw/Tw.h>
 #include <Tw/Twstat.h>
@@ -46,6 +51,13 @@ static udat kbdFlags = TTY_KBDAPPLIC | TTY_AUTOWRAP, defaultFlags = TTY_KBDAPPLI
 static dat dirty[2][4];
 static ldat dirtyS[2];
 static byte dirtyN;
+
+struct vterm_data {
+  VTerm *vt;
+  VTermScreen *screen;
+  VTermState *state;
+  HookFn prev_shutdown;
+};
 
 /* A bitmap for codes <32. A bit of 1 indicates that the code
  * corresponding to that bit number invokes some special action
@@ -1649,6 +1661,371 @@ static tty_data *common(Twindow w) {
   return tty;
 }
 
+static tcell *VtermCellPtr(tty_data *tty, dat x, dat y) {
+  tcell *p = tty->Start + x + (ldat)y * tty->SizeX;
+  if (p >= tty->Split) {
+    p -= tty->Split - tty->Win->USE.C.Contents;
+  }
+  return p;
+}
+
+static trgb VtermColorToTrgb(tty_data *tty, const VTermColor *color, bool is_fg) {
+  if (!tty) {
+    const tcolor def = TCOL(twhite, tblack);
+    return is_fg ? TCOLFG(def) : TCOLBG(def);
+  }
+  if (!color) {
+    return is_fg ? TCOLFG(tty->DefColor) : TCOLBG(tty->DefColor);
+  }
+  if (is_fg && VTERM_COLOR_IS_DEFAULT_FG(color)) {
+    return TCOLFG(tty->DefColor);
+  }
+  if (!is_fg && VTERM_COLOR_IS_DEFAULT_BG(color)) {
+    return TCOLBG(tty->DefColor);
+  }
+  if (tty->VTerm && VTERM_COLOR_IS_INDEXED(color)) {
+    VTermColor tmp = *color;
+    vterm_screen_convert_color_to_rgb(tty->VTerm->screen, &tmp);
+    return TRGB(tmp.rgb.red, tmp.rgb.green, tmp.rgb.blue);
+  }
+  if (VTERM_COLOR_IS_RGB(color)) {
+    return TRGB(color->rgb.red, color->rgb.green, color->rgb.blue);
+  }
+  return is_fg ? TCOLFG(tty->DefColor) : TCOLBG(tty->DefColor);
+}
+
+static tcell VtermCellToTcell(tty_data *tty, const VTermScreenCell *cell) {
+  trune rune = ' ';
+  if (cell && cell->width > 0 && cell->chars[0]) {
+    rune = (trune)cell->chars[0];
+  }
+  if (cell && cell->attrs.conceal) {
+    rune = ' ';
+  }
+
+  trgb fg = cell ? VtermColorToTrgb(tty, &cell->fg, true) : TCOLFG(tty->DefColor);
+  trgb bg = cell ? VtermColorToTrgb(tty, &cell->bg, false) : TCOLBG(tty->DefColor);
+
+  if (cell && cell->attrs.reverse) {
+    const trgb tmp = fg;
+    fg = bg;
+    bg = tmp;
+  }
+  if (cell && cell->attrs.underline) {
+    fg = TCOLFG(tty->Underline);
+  }
+  if (cell && cell->attrs.bold) {
+    fg |= thigh;
+  }
+  if (cell && cell->attrs.blink) {
+    bg |= thigh;
+  }
+
+  return TCELL(TCOL(fg, bg), rune);
+}
+
+static int VtermDamage(VTermRect rect, void *user) {
+  tty_data *tty = (tty_data *)user;
+  if (!tty || !tty->VTerm || !tty->Win) {
+    return 0;
+  }
+
+  if (rect.end_row <= rect.start_row || rect.end_col <= rect.start_col) {
+    return 1;
+  }
+
+  dat x1 = Max2((dat)rect.start_col, (dat)0);
+  dat y1 = Max2((dat)rect.start_row, (dat)0);
+  dat x2 = Min2((dat)(rect.end_col - 1), (dat)(tty->SizeX - 1));
+  dat y2 = Min2((dat)(rect.end_row - 1), (dat)(tty->SizeY - 1));
+  if (x1 > x2 || y1 > y2) {
+    return 1;
+  }
+
+  for (dat y = y1; y <= y2; y++) {
+    for (dat x = x1; x <= x2; x++) {
+      VTermPos pos = {y, x};
+      VTermScreenCell cell;
+      if (!vterm_screen_get_cell(tty->VTerm->screen, pos, &cell)) {
+        continue;
+      }
+      *VtermCellPtr(tty, x, y) = VtermCellToTcell(tty, &cell);
+    }
+  }
+  dirty_tty(tty, x1, y1, x2, y2);
+  return 1;
+}
+
+static int VtermMoveCursor(VTermPos pos, VTermPos oldpos, int visible, void *user) {
+  tty_data *tty = (tty_data *)user;
+  (void)oldpos;
+  if (!tty || !tty->Win) {
+    return 0;
+  }
+  tty->X = pos.col;
+  tty->Y = pos.row;
+  tty->Pos = VtermCellPtr(tty, tty->X, tty->Y);
+  if (visible >= 0) {
+    tty->Win->ChangeField(TWS_window_Flags, WINDOWFL_CURSOR_ON,
+                          visible ? WINDOWFL_CURSOR_ON : 0);
+  }
+  tty->Flags |= TTY_UPDATECURSOR;
+  return 1;
+}
+
+static void VtermSetMouseMode(tty_data *tty, int mode) {
+  if (!tty || !tty->Win) {
+    return;
+  }
+  const uldat clear = TTY_REPORTMOUSE_STYLE | TTY_REPORTMOUSE_RELEASE | TTY_REPORTMOUSE_DRAG |
+                      TTY_REPORTMOUSE_MOVE;
+  tty->Flags &= ~clear;
+
+  uldat set_flags = 0;
+  uldat attr_set = 0;
+  switch (mode) {
+  case VTERM_PROP_MOUSE_CLICK:
+    set_flags = TTY_REPORTMOUSE_XTERM | TTY_REPORTMOUSE_RELEASE;
+    attr_set = WINDOW_WANT_MOUSE;
+    break;
+  case VTERM_PROP_MOUSE_DRAG:
+    set_flags = TTY_REPORTMOUSE_XTERM | TTY_REPORTMOUSE_RELEASE | TTY_REPORTMOUSE_DRAG;
+    attr_set = WINDOW_WANT_MOUSE | WINDOW_WANT_MOUSE_MOTION;
+    break;
+  case VTERM_PROP_MOUSE_MOVE:
+    set_flags = TTY_REPORTMOUSE_XTERM | TTY_REPORTMOUSE_RELEASE | TTY_REPORTMOUSE_DRAG |
+                TTY_REPORTMOUSE_MOVE;
+    attr_set = WINDOW_WANT_MOUSE | WINDOW_WANT_MOUSE_MOTION;
+    break;
+  case VTERM_PROP_MOUSE_NONE:
+  default:
+    set_flags = 0;
+    attr_set = 0;
+    break;
+  }
+
+  tty->Flags |= set_flags;
+  tty->Win->ChangeField(TWS_window_Attr, WINDOW_WANT_MOUSE | WINDOW_WANT_MOUSE_MOTION, attr_set);
+}
+
+static int VtermSetTermProp(VTermProp prop, VTermValue *val, void *user) {
+  tty_data *tty = (tty_data *)user;
+  if (!tty || !tty->Win || !val) {
+    return 0;
+  }
+  switch (prop) {
+  case VTERM_PROP_TITLE:
+    if (val->string.initial) {
+      tty->newName.clear();
+    }
+    tty->newName.append(val->string.str, val->string.len);
+    if (val->string.final) {
+      const size_t len = tty->newName.size();
+      if (len) {
+        char *title = CloneStrL(tty->newName.data(), len);
+        if (title) {
+          tty->Win->SetTitle((dat)len, title);
+        }
+      }
+      tty->newName.clear();
+    }
+    return 1;
+  case VTERM_PROP_CURSORVISIBLE:
+    tty->Win->ChangeField(TWS_window_Flags, WINDOWFL_CURSOR_ON,
+                          val->boolean ? WINDOWFL_CURSOR_ON : 0);
+    tty->Flags |= TTY_UPDATECURSOR;
+    return 1;
+  case VTERM_PROP_CURSORSHAPE:
+    switch (val->number) {
+    case VTERM_PROP_CURSORSHAPE_BLOCK:
+      tty->Win->CursorType = SOLIDCURSOR;
+      break;
+    case VTERM_PROP_CURSORSHAPE_UNDERLINE:
+    case VTERM_PROP_CURSORSHAPE_BAR_LEFT:
+    default:
+      tty->Win->CursorType = LINECURSOR;
+      break;
+    }
+    if (ContainsCursor(tty->Win)) {
+      UpdateCursor();
+    }
+    return 1;
+  case VTERM_PROP_MOUSE:
+    VtermSetMouseMode(tty, val->number);
+    return 1;
+  default:
+    return 0;
+  }
+}
+
+static int VtermBell(void * /*user*/) {
+  BeepHW();
+  return 1;
+}
+
+static int VtermResize(int /*rows*/, int /*cols*/, void * /*user*/) {
+  return 1;
+}
+
+static int VtermSbPushLine(int /*cols*/, const VTermScreenCell * /*cells*/, void *user) {
+  tty_data *tty = (tty_data *)user;
+  if (!tty) {
+    return 0;
+  }
+  scrollup(tty, 0, tty->SizeY, 1);
+  return 1;
+}
+
+static int VtermSbPopLine(int /*cols*/, VTermScreenCell * /*cells*/, void * /*user*/) {
+  return 0;
+}
+
+static int VtermSbClear(void * /*user*/) {
+  return 1;
+}
+
+static const VTermScreenCallbacks VtermCallbacks = {
+    VtermDamage,
+    NULL,
+    VtermMoveCursor,
+    VtermSetTermProp,
+    VtermBell,
+    VtermResize,
+    VtermSbPushLine,
+    VtermSbPopLine,
+    VtermSbClear,
+};
+
+static void VtermBackendResize(tty_data *tty, dat rows, dat cols) {
+  if (!tty || !tty->VTerm || !tty->VTerm->vt) {
+    return;
+  }
+  vterm_set_size(tty->VTerm->vt, rows, cols);
+  vterm_screen_flush_damage(tty->VTerm->screen);
+  flush_tty(tty);
+}
+
+static void VtermFree(tty_data *tty) {
+  if (!tty || !tty->VTerm) {
+    return;
+  }
+  vterm_data *vt = tty->VTerm;
+  tty->VTerm = NULL;
+  tty->BackendResize = NULL;
+  if (vt->vt) {
+    vterm_free(vt->vt);
+  }
+  FreeMem(vt);
+}
+
+static void VtermShutdownHook(Twidget w) {
+  if (!w || !IS_WINDOW(w)) {
+    return;
+  }
+  Twindow win = (Twindow)w;
+  if (!W_USE(win, USECONTENTS) || !win->USE.C.TtyData) {
+    return;
+  }
+  tty_data *tty = win->USE.C.TtyData;
+  if (!tty->VTerm) {
+    return;
+  }
+  vterm_data *vt = tty->VTerm;
+  HookFn prev = vt->prev_shutdown;
+  if (prev && prev != VtermShutdownHook) {
+    prev(w);
+  }
+  VtermFree(tty);
+}
+
+static bool VtermInit(tty_data *tty) {
+  if (!tty || tty->VTerm) {
+    return true;
+  }
+  if (tty->SizeX <= 0 || tty->SizeY <= 0) {
+    return false;
+  }
+
+  vterm_data *vt = (vterm_data *)AllocMem0(sizeof(vterm_data));
+  if (!vt) {
+    return false;
+  }
+  vt->vt = vterm_new(tty->SizeY, tty->SizeX);
+  if (!vt->vt) {
+    FreeMem(vt);
+    return false;
+  }
+  vt->screen = vterm_obtain_screen(vt->vt);
+  vt->state = vterm_obtain_state(vt->vt);
+
+  vterm_set_utf8(vt->vt, 1);
+  vterm_screen_set_callbacks(vt->screen, &VtermCallbacks, tty);
+  vterm_screen_set_damage_merge(vt->screen, VTERM_DAMAGE_ROW);
+  vterm_screen_enable_altscreen(vt->screen, 1);
+  vterm_screen_enable_reflow(vt->screen, false);
+  vterm_screen_reset(vt->screen, 1);
+
+  tty->VTerm = vt;
+  tty->BackendResize = VtermBackendResize;
+
+  if (tty->Win && tty->Win->ShutDownHook != VtermShutdownHook) {
+    vt->prev_shutdown = tty->Win->ShutDownHook;
+    tty->Win->ShutDownHook = VtermShutdownHook;
+  }
+  return true;
+}
+
+static bool VtermWriteBytes(Twindow w, tty_data *tty, const char *bytes, uldat len) {
+  if (!tty || !tty->VTerm || !bytes || len == 0) {
+    return false;
+  }
+  (void)common(w);
+  vterm_input_write(tty->VTerm->vt, bytes, len);
+  vterm_screen_flush_damage(tty->VTerm->screen);
+  flush_tty(tty);
+  return true;
+}
+
+static bool VtermWriteRunes(Twindow w, tty_data *tty, const trune *runes, uldat len) {
+  if (!tty || !tty->VTerm || !runes || len == 0) {
+    return false;
+  }
+  (void)common(w);
+  for (uldat i = 0; i < len; i++) {
+    Utf8 seq(runes[i]);
+    vterm_input_write(tty->VTerm->vt, seq.data(), seq.size());
+  }
+  vterm_screen_flush_damage(tty->VTerm->screen);
+  flush_tty(tty);
+  return true;
+}
+
+term_backend EnsureTermBackend(Twindow w) {
+  if (!w || !W_USE(w, USECONTENTS) || !w->USE.C.TtyData) {
+    return TERM_BACKEND_LEGACY;
+  }
+
+  tty_data *tty = w->USE.C.TtyData;
+  tty->Win = w;
+
+  if (tty->Backend == TERM_BACKEND_UNSET) {
+    tty->Backend = TermBackendDecide(tty->ScrollBack);
+  }
+
+  if (tty->Backend == TERM_BACKEND_VTERM && !tty->VTerm) {
+    if (!VtermInit(tty)) {
+      log(WARNING) << "twin: failed to init libvterm backend; falling back to legacy\n";
+      tty->Backend = TERM_BACKEND_LEGACY;
+    }
+  }
+
+  if (tty->Backend != TERM_BACKEND_VTERM) {
+    tty->BackendResize = NULL;
+  }
+
+  return tty->Backend;
+}
+
 /*
  * combine (*pc) with partial utf-8 char stored in tty->utf8_char.
  * return ttrue if the utf-8 char is complete, and can be displayed.
@@ -1714,6 +2091,14 @@ static bool TtyWriteCharsetOrUtf8(Twindow w, uldat len, const char *chars, bool 
   }
   if (!len || !chars) {
     return true;
+  }
+  tty = w->USE.C.TtyData;
+  if (EnsureTermBackend(w) == TERM_BACKEND_VTERM) {
+    return VtermWriteBytes(w, tty, chars, len);
+  }
+  tty = w->USE.C.TtyData;
+  if (EnsureTermBackend(w) == TERM_BACKEND_VTERM) {
+    return VtermWriteBytes(w, tty, chars, len);
   }
   tty = common(w);
 
@@ -1792,6 +2177,10 @@ bool TtyWriteTRune(Twindow w, uldat len, const trune *runes) {
   }
   if (!len || !runes) {
     return true;
+  }
+  tty = w->USE.C.TtyData;
+  if (EnsureTermBackend(w) == TERM_BACKEND_VTERM) {
+    return VtermWriteRunes(w, tty, runes, len);
   }
   tty = common(w);
 

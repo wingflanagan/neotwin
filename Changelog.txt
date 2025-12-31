@@ -1,3 +1,15 @@
+From 0.9.1.x to 0.9.1.neo.2: (v1.1.0) (John Flanagan, 2025-12-30)
+- changed the default behavior so that hw=tty is the default
+- changed the way windows are brought to the top; clicking anywhere on a window will do it
+- changed default shell from internal sh to the host's /bin/bash, if present
+- changed version in About box and added text for fork, maintainer (me), and new git repo
+- changed behavior of OK button to stay centered if the About box is made bigger
+- integrated libvterm v0.3.3 to modernize and improve the internal terminal emulator
+- created shell script to clean/build; integrates building a debian package
+
+From 0.6.2.1 to 0.9.1.x: (Massimiliano Ghilardi, ???)
+	* Unknown. 
+
 From 0.6.2.1 to 0.6.2.2: (Massimiliano Ghilardi, 02 July 2016)
 	* Removed support for non-Unicode builds. From now on, twin
           can ONLY be compiled in Unicode-aware mode (currently uses

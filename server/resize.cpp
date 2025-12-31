@@ -192,6 +192,10 @@ bool ResizeWindowContents(Twindow w) {
   Data->saveY = Data->Y = w->CurY - Data->ScrollBack;
   Data->Pos = w->USE.C.Contents + w->CurY * x + w->CurX;
 
+  if (Data->BackendResize) {
+    Data->BackendResize(Data, Data->SizeY, Data->SizeX);
+  }
+
   if (!(w->Attr & WINDOW_WANT_CHANGES) && w->USE.C.TtyData && w->RemoteData.FdSlot != NOSLOT)
     /* the MsgPort will not be informed of the resize...
      * we must send SIGWINCH manually */

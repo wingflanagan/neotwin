@@ -5,12 +5,39 @@ set -euo pipefail
 # Run this from inside the NTwin source tree (the directory with configure).
 
 PKG_NAME="ntwin"
-PKG_RELEASE="6"          # produces version like 0.9.1-2
+PKG_RELEASE="7"          # produces version like 0.9.1-2
 PREFIX="/usr"            # IMPORTANT: avoids /usr/local baked-in paths
 STAGE_ROOT="/tmp/ntwin-root"
 PKG_ROOT="/tmp/ntwin-pkg"
+DEBUG_BUILD=0
 
 die() { echo "ERROR: $*" >&2; exit 1; }
+
+usage() {
+  cat <<EOF
+Usage: $0 [--debug]
+
+Options:
+  --debug, -g   Build with debug symbols (-g3 -O0) for larger binaries.
+  -h, --help    Show this help.
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --debug|-g)
+      DEBUG_BUILD=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      die "Unknown argument: $1"
+      ;;
+  esac
+done
 
 # --- sanity checks ---
 [[ -f "./configure" ]] || die "Run this from the NTwin source root (missing ./configure)."
@@ -55,6 +82,11 @@ echo "Version:  ${VERSION}"
 echo "Release:  ${PKG_RELEASE}"
 echo "Arch:     ${ARCH}"
 echo "Prefix:   ${PREFIX}"
+if [[ "${DEBUG_BUILD}" -eq 1 ]]; then
+  echo "Build:    debug symbols enabled"
+else
+  echo "Build:    default (no extra symbols)"
+fi
 echo "Output:   ${OUT_DEB}"
 echo
 
@@ -72,7 +104,13 @@ make distclean >/dev/null 2>&1 || true
 
 # --- Step 3: configure & build ---
 echo ">> Configuring..."
-./configure --prefix="${PREFIX}"
+if [[ "${DEBUG_BUILD}" -eq 1 ]]; then
+  CFLAGS="-g3 -O0 -fno-omit-frame-pointer" \
+  CXXFLAGS="-g3 -O0 -fno-omit-frame-pointer" \
+  ./configure --prefix="${PREFIX}"
+else
+  ./configure --prefix="${PREFIX}"
+fi
 
 echo ">> Building..."
 make -j"$(nproc)"

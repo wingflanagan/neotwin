@@ -171,6 +171,9 @@ static bool InitTtyDataWindow(Twindow window, dat scrollbacklines) {
    * but we don't want to call it from here
    */
   tty->State = ESnormal;
+  tty->VTerm = NULL;
+  tty->Backend = TERM_BACKEND_UNSET;
+  tty->BackendResize = NULL;
   tty->Flags = TTY_AUTOWRAP;
   tty->Effects = 0;
   window->YLogic = window->CurY = tty->ScrollBack = scrollbacklines;
@@ -221,6 +224,11 @@ void Swindow::Delete() {
     FreeMem(ColName);
   }
   if (W_USE(this, USECONTENTS)) {
+    if (ShutDownHook) {
+      HookFn hook = ShutDownHook;
+      ShutDownHook = NULL;
+      hook(this);
+    }
     tty_data *tty = USE.C.TtyData;
     if (tty) {
       tty->newName.~String();

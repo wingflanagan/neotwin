@@ -35,6 +35,9 @@
 #ifdef TW_HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#ifdef TW_HAVE_STDIO_H
+#include <stdio.h>
+#endif
 #ifdef TW_HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
@@ -61,9 +64,11 @@
 #include "tty_ioctl.h"
 
 #include "twin.h"
+#include "common.h"
 #include "data.h"
 #include "main.h"
 #include "log.h"
+#include "term_backend.h"
 #include "util.h"
 #include "hw.h" // AllDefaultSignals()
 
@@ -274,14 +279,18 @@ byte spawnInWindow(Twindow Window, const char *arg0, const char *const *argv) {
       closeAllFds(ttyfd);
       if (switchtoTty()) {
         /**
-         * set environment variable TERM=xterm... only in child process:
+         * set environment variable TERM=... only in child process:
          * setting it in main process confuses libgpm, used by --hw=tty
          */
 #if defined(TW_HAVE_SETENV)
-        setenv("TERM", "xterm-256color", 1);
+        const term_backend backend = EnsureTermBackend(Window);
+        setenv("TERM", TermBackendTermEnv(backend), 1);
         setenv("COLORTERM", "truecolor", 1);
 #elif defined(TW_HAVE_PUTENV)
-        putenv("TERM=xterm-256color");
+        const term_backend backend = EnsureTermBackend(Window);
+        char buf[TW_SMALLBUFF];
+        snprintf(buf, sizeof(buf), "TERM=%s", TermBackendTermEnv(backend));
+        putenv(CloneStr(buf));
         putenv("COLORTERM=truecolor");
 #endif
         execvp(arg0, (char *const *)RemoveConst(argv));

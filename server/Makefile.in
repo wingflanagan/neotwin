@@ -168,7 +168,17 @@ libsocket_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(CXXFLAGS) $(libsocket_la_LDFLAGS) $(LDFLAGS) -o $@
 @LIBSOCKET_la_TRUE@am_libsocket_la_rpath = -rpath $(pkglibdir)
 libterm_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libterm_la_OBJECTS = pty.lo tterm.lo tty.lo
+am__dirstamp = $(am__leading_dot)dirstamp
+am_libterm_la_OBJECTS = libterm_la-pty.lo libterm_la-tterm.lo \
+	libterm_la-tty.lo ../libs/vterm/src/libterm_la-encoding.lo \
+	../libs/vterm/src/libterm_la-keyboard.lo \
+	../libs/vterm/src/libterm_la-mouse.lo \
+	../libs/vterm/src/libterm_la-parser.lo \
+	../libs/vterm/src/libterm_la-pen.lo \
+	../libs/vterm/src/libterm_la-screen.lo \
+	../libs/vterm/src/libterm_la-state.lo \
+	../libs/vterm/src/libterm_la-unicode.lo \
+	../libs/vterm/src/libterm_la-vterm.lo
 libterm_la_OBJECTS = $(am_libterm_la_OBJECTS)
 libterm_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
@@ -186,20 +196,19 @@ ntwdisplay_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 am_ntwin_OBJECTS = ntwin-wrapper.$(OBJEXT)
 ntwin_OBJECTS = $(am_ntwin_OBJECTS)
 ntwin_LDADD = $(LDADD)
-am__dirstamp = $(am__leading_dot)dirstamp
 am_ntwin_server_OBJECTS = alloc.$(OBJEXT) builtin.$(OBJEXT) \
 	data.$(OBJEXT) dl.$(OBJEXT) dl_helper.$(OBJEXT) draw.$(OBJEXT) \
 	extreg.$(OBJEXT) hw.$(OBJEXT) hw_multi.$(OBJEXT) log.$(OBJEXT) \
 	main.$(OBJEXT) methods.$(OBJEXT) missing.$(OBJEXT) \
-	palette.$(OBJEXT) obj/all.$(OBJEXT) obj/display.$(OBJEXT) \
-	obj/gadget.$(OBJEXT) obj/group.$(OBJEXT) obj/id.$(OBJEXT) \
-	obj/menu.$(OBJEXT) obj/menuitem.$(OBJEXT) obj/module.$(OBJEXT) \
-	obj/msg.$(OBJEXT) obj/msgport.$(OBJEXT) obj/mutex.$(OBJEXT) \
-	obj/obj.$(OBJEXT) obj/row.$(OBJEXT) obj/screen.$(OBJEXT) \
-	obj/widget.$(OBJEXT) obj/window.$(OBJEXT) printk.$(OBJEXT) \
-	privilege.$(OBJEXT) rcopt.$(OBJEXT) rcrun.$(OBJEXT) \
-	remote.$(OBJEXT) resize.$(OBJEXT) shm.$(OBJEXT) \
-	scroller.$(OBJEXT) util.$(OBJEXT) wm.$(OBJEXT)
+	palette.$(OBJEXT) term_backend.$(OBJEXT) obj/all.$(OBJEXT) \
+	obj/display.$(OBJEXT) obj/gadget.$(OBJEXT) obj/group.$(OBJEXT) \
+	obj/id.$(OBJEXT) obj/menu.$(OBJEXT) obj/menuitem.$(OBJEXT) \
+	obj/module.$(OBJEXT) obj/msg.$(OBJEXT) obj/msgport.$(OBJEXT) \
+	obj/mutex.$(OBJEXT) obj/obj.$(OBJEXT) obj/row.$(OBJEXT) \
+	obj/screen.$(OBJEXT) obj/widget.$(OBJEXT) obj/window.$(OBJEXT) \
+	printk.$(OBJEXT) privilege.$(OBJEXT) rcopt.$(OBJEXT) \
+	rcrun.$(OBJEXT) remote.$(OBJEXT) resize.$(OBJEXT) \
+	shm.$(OBJEXT) scroller.$(OBJEXT) util.$(OBJEXT) wm.$(OBJEXT)
 ntwin_server_OBJECTS = $(am_ntwin_server_OBJECTS)
 ntwin_server_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -222,29 +231,41 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/admin/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/alloc.Po ./$(DEPDIR)/builtin.Po \
+am__depfiles_remade =  \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-encoding.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-keyboard.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-mouse.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-parser.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-pen.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-screen.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-state.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-unicode.Plo \
+	../libs/vterm/src/$(DEPDIR)/libterm_la-vterm.Plo \
+	./$(DEPDIR)/alloc.Po ./$(DEPDIR)/builtin.Po \
 	./$(DEPDIR)/data.Po ./$(DEPDIR)/display.Po ./$(DEPDIR)/dl.Po \
 	./$(DEPDIR)/dl_helper.Po ./$(DEPDIR)/draw.Po \
 	./$(DEPDIR)/extreg.Po ./$(DEPDIR)/hw.Po \
-	./$(DEPDIR)/hw_multi.Po ./$(DEPDIR)/log.Po ./$(DEPDIR)/main.Po \
-	./$(DEPDIR)/md5.Plo ./$(DEPDIR)/methods.Po \
+	./$(DEPDIR)/hw_multi.Po ./$(DEPDIR)/libterm_la-pty.Plo \
+	./$(DEPDIR)/libterm_la-tterm.Plo \
+	./$(DEPDIR)/libterm_la-tty.Plo ./$(DEPDIR)/log.Po \
+	./$(DEPDIR)/main.Po ./$(DEPDIR)/md5.Plo ./$(DEPDIR)/methods.Po \
 	./$(DEPDIR)/missing.Po ./$(DEPDIR)/ntwin-wrapper.Po \
 	./$(DEPDIR)/palette.Po ./$(DEPDIR)/printk.Po \
-	./$(DEPDIR)/privilege.Po ./$(DEPDIR)/pty.Plo \
-	./$(DEPDIR)/rcopt.Po ./$(DEPDIR)/rcparse_lex.Plo \
-	./$(DEPDIR)/rcparse_tab.Plo ./$(DEPDIR)/rcrun.Po \
-	./$(DEPDIR)/remote.Po ./$(DEPDIR)/resize.Po \
-	./$(DEPDIR)/scroller.Po ./$(DEPDIR)/shm.Po \
-	./$(DEPDIR)/socket.Plo ./$(DEPDIR)/tterm.Plo \
-	./$(DEPDIR)/tty.Plo ./$(DEPDIR)/util.Po ./$(DEPDIR)/wm.Po \
-	obj/$(DEPDIR)/all.Po obj/$(DEPDIR)/display.Po \
-	obj/$(DEPDIR)/gadget.Po obj/$(DEPDIR)/group.Po \
-	obj/$(DEPDIR)/id.Po obj/$(DEPDIR)/menu.Po \
-	obj/$(DEPDIR)/menuitem.Po obj/$(DEPDIR)/module.Po \
-	obj/$(DEPDIR)/msg.Po obj/$(DEPDIR)/msgport.Po \
-	obj/$(DEPDIR)/mutex.Po obj/$(DEPDIR)/obj.Po \
-	obj/$(DEPDIR)/row.Po obj/$(DEPDIR)/screen.Po \
-	obj/$(DEPDIR)/widget.Po obj/$(DEPDIR)/window.Po
+	./$(DEPDIR)/privilege.Po ./$(DEPDIR)/rcopt.Po \
+	./$(DEPDIR)/rcparse_lex.Plo ./$(DEPDIR)/rcparse_tab.Plo \
+	./$(DEPDIR)/rcrun.Po ./$(DEPDIR)/remote.Po \
+	./$(DEPDIR)/resize.Po ./$(DEPDIR)/scroller.Po \
+	./$(DEPDIR)/shm.Po ./$(DEPDIR)/socket.Plo \
+	./$(DEPDIR)/term_backend.Po ./$(DEPDIR)/util.Po \
+	./$(DEPDIR)/wm.Po obj/$(DEPDIR)/all.Po \
+	obj/$(DEPDIR)/display.Po obj/$(DEPDIR)/gadget.Po \
+	obj/$(DEPDIR)/group.Po obj/$(DEPDIR)/id.Po \
+	obj/$(DEPDIR)/menu.Po obj/$(DEPDIR)/menuitem.Po \
+	obj/$(DEPDIR)/module.Po obj/$(DEPDIR)/msg.Po \
+	obj/$(DEPDIR)/msgport.Po obj/$(DEPDIR)/mutex.Po \
+	obj/$(DEPDIR)/obj.Po obj/$(DEPDIR)/row.Po \
+	obj/$(DEPDIR)/screen.Po obj/$(DEPDIR)/widget.Po \
+	obj/$(DEPDIR)/window.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -390,6 +411,7 @@ EGREP = @EGREP@
 ETAGS = @ETAGS@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+FILECMD = @FILECMD@
 GREP = @GREP@
 INCLTDL = @INCLTDL@
 INSTALL = @INSTALL@
@@ -528,12 +550,13 @@ top_srcdir = @top_srcdir@
 SUBDIRS = hw
 bin_SCRIPTS = ntwstart
 pkglib_LTLIBRARIES = $(am__append_1) $(am__append_2) $(am__append_3)
-AM_CPPFLAGS = -I$(top_srcdir)/include $(LTDLINCL) -DPLUGINDIR="\"$(pkglibdir)\"" -DCONFDIR="\"$(sysconfdir)/twin\""
+AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/server -I$(top_srcdir)/libs/vterm/include $(LTDLINCL) -DPLUGINDIR="\"$(pkglibdir)\"" -DCONFDIR="\"$(sysconfdir)/twin\""
 ntwin_CPPFLAGS = -I$(top_srcdir)/include $(LTDLINCL) -DBINDIR="\"$(bindir)\""
 ntwdisplay_SOURCES = alloc.cpp display.cpp dl_helper.cpp hw.cpp log.cpp missing.cpp palette.cpp
 ntwin_SOURCES = wrapper.c
 ntwin_server_SOURCES = alloc.cpp builtin.cpp data.cpp dl.cpp dl_helper.cpp draw.cpp extreg.cpp \
                         hw.cpp hw_multi.cpp log.cpp main.cpp methods.cpp missing.cpp palette.cpp \
+                        term_backend.cpp \
                         obj/all.cpp obj/display.cpp obj/gadget.cpp obj/group.cpp \
                         obj/id.cpp obj/menu.cpp obj/menuitem.cpp obj/module.cpp obj/msg.cpp obj/msgport.cpp \
                         obj/mutex.cpp obj/obj.cpp obj/row.cpp obj/screen.cpp obj/widget.cpp obj/window.cpp \
@@ -541,7 +564,19 @@ ntwin_server_SOURCES = alloc.cpp builtin.cpp data.cpp dl.cpp dl_helper.cpp draw.
                         util.cpp wm.cpp
 
 librcparse_la_SOURCES = rcparse_tab.cpp rcparse_lex.cpp
-libterm_la_SOURCES = pty.cpp tterm.cpp tty.cpp
+libterm_la_SOURCES = pty.cpp tterm.cpp tty.cpp \
+                        ../libs/vterm/src/encoding.c \
+                        ../libs/vterm/src/keyboard.c \
+                        ../libs/vterm/src/mouse.c \
+                        ../libs/vterm/src/parser.c \
+                        ../libs/vterm/src/pen.c \
+                        ../libs/vterm/src/screen.c \
+                        ../libs/vterm/src/state.c \
+                        ../libs/vterm/src/unicode.c \
+                        ../libs/vterm/src/vterm.c
+
+libterm_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/libs/vterm/include
+libterm_la_CFLAGS = $(AM_CFLAGS) -std=c99
 libsocket_la_SOURCES = md5.cpp socket.cpp
 ntwdisplay_LDFLAGS = -export-dynamic $(LDFLAGS_BIN_EXPORT_DYNAMIC)
 ntwin_server_LDFLAGS = -export-dynamic $(LDFLAGS_BIN_EXPORT_DYNAMIC)
@@ -676,6 +711,39 @@ librcparse.la: $(librcparse_la_OBJECTS) $(librcparse_la_DEPENDENCIES) $(EXTRA_li
 
 libsocket.la: $(libsocket_la_OBJECTS) $(libsocket_la_DEPENDENCIES) $(EXTRA_libsocket_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(libsocket_la_LINK) $(am_libsocket_la_rpath) $(libsocket_la_OBJECTS) $(libsocket_la_LIBADD) $(LIBS)
+../libs/vterm/src/$(am__dirstamp):
+	@$(MKDIR_P) ../libs/vterm/src
+	@: > ../libs/vterm/src/$(am__dirstamp)
+../libs/vterm/src/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) ../libs/vterm/src/$(DEPDIR)
+	@: > ../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-encoding.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-keyboard.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-mouse.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-parser.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-pen.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-screen.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-state.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-unicode.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+../libs/vterm/src/libterm_la-vterm.lo:  \
+	../libs/vterm/src/$(am__dirstamp) \
+	../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
 
 libterm.la: $(libterm_la_OBJECTS) $(libterm_la_DEPENDENCIES) $(EXTRA_libterm_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(libterm_la_LINK) $(am_libterm_la_rpath) $(libterm_la_OBJECTS) $(libterm_la_LIBADD) $(LIBS)
@@ -759,11 +827,22 @@ uninstall-binSCRIPTS:
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f ../libs/vterm/src/*.$(OBJEXT)
+	-rm -f ../libs/vterm/src/*.lo
 	-rm -f obj/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-encoding.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-keyboard.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-mouse.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-parser.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-pen.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-screen.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-state.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-unicode.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../libs/vterm/src/$(DEPDIR)/libterm_la-vterm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alloc.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/builtin.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/data.Po@am__quote@ # am--include-marker
@@ -774,6 +853,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/extreg.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hw_multi.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libterm_la-pty.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libterm_la-tterm.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libterm_la-tty.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/md5.Plo@am__quote@ # am--include-marker
@@ -783,7 +865,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/palette.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/printk.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/privilege.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pty.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rcopt.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rcparse_lex.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rcparse_tab.Plo@am__quote@ # am--include-marker
@@ -793,8 +874,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scroller.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shm.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/socket.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tterm.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tty.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/term_backend.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wm.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@obj/$(DEPDIR)/all.Po@am__quote@ # am--include-marker
@@ -844,6 +924,69 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
+../libs/vterm/src/libterm_la-encoding.lo: ../libs/vterm/src/encoding.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-encoding.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-encoding.Tpo -c -o ../libs/vterm/src/libterm_la-encoding.lo `test -f '../libs/vterm/src/encoding.c' || echo '$(srcdir)/'`../libs/vterm/src/encoding.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-encoding.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-encoding.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/encoding.c' object='../libs/vterm/src/libterm_la-encoding.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-encoding.lo `test -f '../libs/vterm/src/encoding.c' || echo '$(srcdir)/'`../libs/vterm/src/encoding.c
+
+../libs/vterm/src/libterm_la-keyboard.lo: ../libs/vterm/src/keyboard.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-keyboard.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-keyboard.Tpo -c -o ../libs/vterm/src/libterm_la-keyboard.lo `test -f '../libs/vterm/src/keyboard.c' || echo '$(srcdir)/'`../libs/vterm/src/keyboard.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-keyboard.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-keyboard.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/keyboard.c' object='../libs/vterm/src/libterm_la-keyboard.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-keyboard.lo `test -f '../libs/vterm/src/keyboard.c' || echo '$(srcdir)/'`../libs/vterm/src/keyboard.c
+
+../libs/vterm/src/libterm_la-mouse.lo: ../libs/vterm/src/mouse.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-mouse.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-mouse.Tpo -c -o ../libs/vterm/src/libterm_la-mouse.lo `test -f '../libs/vterm/src/mouse.c' || echo '$(srcdir)/'`../libs/vterm/src/mouse.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-mouse.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-mouse.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/mouse.c' object='../libs/vterm/src/libterm_la-mouse.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-mouse.lo `test -f '../libs/vterm/src/mouse.c' || echo '$(srcdir)/'`../libs/vterm/src/mouse.c
+
+../libs/vterm/src/libterm_la-parser.lo: ../libs/vterm/src/parser.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-parser.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-parser.Tpo -c -o ../libs/vterm/src/libterm_la-parser.lo `test -f '../libs/vterm/src/parser.c' || echo '$(srcdir)/'`../libs/vterm/src/parser.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-parser.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-parser.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/parser.c' object='../libs/vterm/src/libterm_la-parser.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-parser.lo `test -f '../libs/vterm/src/parser.c' || echo '$(srcdir)/'`../libs/vterm/src/parser.c
+
+../libs/vterm/src/libterm_la-pen.lo: ../libs/vterm/src/pen.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-pen.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-pen.Tpo -c -o ../libs/vterm/src/libterm_la-pen.lo `test -f '../libs/vterm/src/pen.c' || echo '$(srcdir)/'`../libs/vterm/src/pen.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-pen.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-pen.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/pen.c' object='../libs/vterm/src/libterm_la-pen.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-pen.lo `test -f '../libs/vterm/src/pen.c' || echo '$(srcdir)/'`../libs/vterm/src/pen.c
+
+../libs/vterm/src/libterm_la-screen.lo: ../libs/vterm/src/screen.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-screen.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-screen.Tpo -c -o ../libs/vterm/src/libterm_la-screen.lo `test -f '../libs/vterm/src/screen.c' || echo '$(srcdir)/'`../libs/vterm/src/screen.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-screen.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-screen.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/screen.c' object='../libs/vterm/src/libterm_la-screen.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-screen.lo `test -f '../libs/vterm/src/screen.c' || echo '$(srcdir)/'`../libs/vterm/src/screen.c
+
+../libs/vterm/src/libterm_la-state.lo: ../libs/vterm/src/state.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-state.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-state.Tpo -c -o ../libs/vterm/src/libterm_la-state.lo `test -f '../libs/vterm/src/state.c' || echo '$(srcdir)/'`../libs/vterm/src/state.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-state.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-state.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/state.c' object='../libs/vterm/src/libterm_la-state.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-state.lo `test -f '../libs/vterm/src/state.c' || echo '$(srcdir)/'`../libs/vterm/src/state.c
+
+../libs/vterm/src/libterm_la-unicode.lo: ../libs/vterm/src/unicode.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-unicode.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-unicode.Tpo -c -o ../libs/vterm/src/libterm_la-unicode.lo `test -f '../libs/vterm/src/unicode.c' || echo '$(srcdir)/'`../libs/vterm/src/unicode.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-unicode.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-unicode.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/unicode.c' object='../libs/vterm/src/libterm_la-unicode.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-unicode.lo `test -f '../libs/vterm/src/unicode.c' || echo '$(srcdir)/'`../libs/vterm/src/unicode.c
+
+../libs/vterm/src/libterm_la-vterm.lo: ../libs/vterm/src/vterm.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -MT ../libs/vterm/src/libterm_la-vterm.lo -MD -MP -MF ../libs/vterm/src/$(DEPDIR)/libterm_la-vterm.Tpo -c -o ../libs/vterm/src/libterm_la-vterm.lo `test -f '../libs/vterm/src/vterm.c' || echo '$(srcdir)/'`../libs/vterm/src/vterm.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) ../libs/vterm/src/$(DEPDIR)/libterm_la-vterm.Tpo ../libs/vterm/src/$(DEPDIR)/libterm_la-vterm.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../libs/vterm/src/vterm.c' object='../libs/vterm/src/libterm_la-vterm.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(libterm_la_CFLAGS) $(CFLAGS) -c -o ../libs/vterm/src/libterm_la-vterm.lo `test -f '../libs/vterm/src/vterm.c' || echo '$(srcdir)/'`../libs/vterm/src/vterm.c
+
 ntwin-wrapper.o: wrapper.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ntwin_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ntwin-wrapper.o -MD -MP -MF $(DEPDIR)/ntwin-wrapper.Tpo -c -o ntwin-wrapper.o `test -f 'wrapper.c' || echo '$(srcdir)/'`wrapper.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ntwin-wrapper.Tpo $(DEPDIR)/ntwin-wrapper.Po
@@ -882,11 +1025,33 @@ ntwin-wrapper.obj: wrapper.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
+libterm_la-pty.lo: pty.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libterm_la-pty.lo -MD -MP -MF $(DEPDIR)/libterm_la-pty.Tpo -c -o libterm_la-pty.lo `test -f 'pty.cpp' || echo '$(srcdir)/'`pty.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libterm_la-pty.Tpo $(DEPDIR)/libterm_la-pty.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pty.cpp' object='libterm_la-pty.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libterm_la-pty.lo `test -f 'pty.cpp' || echo '$(srcdir)/'`pty.cpp
+
+libterm_la-tterm.lo: tterm.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libterm_la-tterm.lo -MD -MP -MF $(DEPDIR)/libterm_la-tterm.Tpo -c -o libterm_la-tterm.lo `test -f 'tterm.cpp' || echo '$(srcdir)/'`tterm.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libterm_la-tterm.Tpo $(DEPDIR)/libterm_la-tterm.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='tterm.cpp' object='libterm_la-tterm.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libterm_la-tterm.lo `test -f 'tterm.cpp' || echo '$(srcdir)/'`tterm.cpp
+
+libterm_la-tty.lo: tty.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libterm_la-tty.lo -MD -MP -MF $(DEPDIR)/libterm_la-tty.Tpo -c -o libterm_la-tty.lo `test -f 'tty.cpp' || echo '$(srcdir)/'`tty.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libterm_la-tty.Tpo $(DEPDIR)/libterm_la-tty.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='tty.cpp' object='libterm_la-tty.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libterm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libterm_la-tty.lo `test -f 'tty.cpp' || echo '$(srcdir)/'`tty.cpp
+
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
+	-rm -rf ../libs/vterm/src/.libs ../libs/vterm/src/_libs
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -1078,6 +1243,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f ../libs/vterm/src/$(DEPDIR)/$(am__dirstamp)
+	-rm -f ../libs/vterm/src/$(am__dirstamp)
 	-rm -f obj/$(DEPDIR)/$(am__dirstamp)
 	-rm -f obj/$(am__dirstamp)
 
@@ -1090,7 +1257,16 @@ clean-am: clean-binPROGRAMS clean-generic clean-libtool \
 	clean-pkglibLTLIBRARIES mostlyclean-am
 
 distclean: distclean-recursive
-		-rm -f ./$(DEPDIR)/alloc.Po
+		-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-encoding.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-keyboard.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-mouse.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-parser.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-pen.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-screen.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-state.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-unicode.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-vterm.Plo
+	-rm -f ./$(DEPDIR)/alloc.Po
 	-rm -f ./$(DEPDIR)/builtin.Po
 	-rm -f ./$(DEPDIR)/data.Po
 	-rm -f ./$(DEPDIR)/display.Po
@@ -1100,6 +1276,9 @@ distclean: distclean-recursive
 	-rm -f ./$(DEPDIR)/extreg.Po
 	-rm -f ./$(DEPDIR)/hw.Po
 	-rm -f ./$(DEPDIR)/hw_multi.Po
+	-rm -f ./$(DEPDIR)/libterm_la-pty.Plo
+	-rm -f ./$(DEPDIR)/libterm_la-tterm.Plo
+	-rm -f ./$(DEPDIR)/libterm_la-tty.Plo
 	-rm -f ./$(DEPDIR)/log.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/md5.Plo
@@ -1109,7 +1288,6 @@ distclean: distclean-recursive
 	-rm -f ./$(DEPDIR)/palette.Po
 	-rm -f ./$(DEPDIR)/printk.Po
 	-rm -f ./$(DEPDIR)/privilege.Po
-	-rm -f ./$(DEPDIR)/pty.Plo
 	-rm -f ./$(DEPDIR)/rcopt.Po
 	-rm -f ./$(DEPDIR)/rcparse_lex.Plo
 	-rm -f ./$(DEPDIR)/rcparse_tab.Plo
@@ -1119,8 +1297,7 @@ distclean: distclean-recursive
 	-rm -f ./$(DEPDIR)/scroller.Po
 	-rm -f ./$(DEPDIR)/shm.Po
 	-rm -f ./$(DEPDIR)/socket.Plo
-	-rm -f ./$(DEPDIR)/tterm.Plo
-	-rm -f ./$(DEPDIR)/tty.Plo
+	-rm -f ./$(DEPDIR)/term_backend.Po
 	-rm -f ./$(DEPDIR)/util.Po
 	-rm -f ./$(DEPDIR)/wm.Po
 	-rm -f obj/$(DEPDIR)/all.Po
@@ -1185,7 +1362,16 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
-		-rm -f ./$(DEPDIR)/alloc.Po
+		-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-encoding.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-keyboard.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-mouse.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-parser.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-pen.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-screen.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-state.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-unicode.Plo
+	-rm -f ../libs/vterm/src/$(DEPDIR)/libterm_la-vterm.Plo
+	-rm -f ./$(DEPDIR)/alloc.Po
 	-rm -f ./$(DEPDIR)/builtin.Po
 	-rm -f ./$(DEPDIR)/data.Po
 	-rm -f ./$(DEPDIR)/display.Po
@@ -1195,6 +1381,9 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f ./$(DEPDIR)/extreg.Po
 	-rm -f ./$(DEPDIR)/hw.Po
 	-rm -f ./$(DEPDIR)/hw_multi.Po
+	-rm -f ./$(DEPDIR)/libterm_la-pty.Plo
+	-rm -f ./$(DEPDIR)/libterm_la-tterm.Plo
+	-rm -f ./$(DEPDIR)/libterm_la-tty.Plo
 	-rm -f ./$(DEPDIR)/log.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/md5.Plo
@@ -1204,7 +1393,6 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f ./$(DEPDIR)/palette.Po
 	-rm -f ./$(DEPDIR)/printk.Po
 	-rm -f ./$(DEPDIR)/privilege.Po
-	-rm -f ./$(DEPDIR)/pty.Plo
 	-rm -f ./$(DEPDIR)/rcopt.Po
 	-rm -f ./$(DEPDIR)/rcparse_lex.Plo
 	-rm -f ./$(DEPDIR)/rcparse_tab.Plo
@@ -1214,8 +1402,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f ./$(DEPDIR)/scroller.Po
 	-rm -f ./$(DEPDIR)/shm.Po
 	-rm -f ./$(DEPDIR)/socket.Plo
-	-rm -f ./$(DEPDIR)/tterm.Plo
-	-rm -f ./$(DEPDIR)/tty.Plo
+	-rm -f ./$(DEPDIR)/term_backend.Po
 	-rm -f ./$(DEPDIR)/util.Po
 	-rm -f ./$(DEPDIR)/wm.Po
 	-rm -f obj/$(DEPDIR)/all.Po

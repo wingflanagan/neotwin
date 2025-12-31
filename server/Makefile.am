@@ -14,13 +14,14 @@ if LIBTERM_la
   pkglib_LTLIBRARIES += libterm.la
 endif
 
-AM_CPPFLAGS           = -I$(top_srcdir)/include $(LTDLINCL) -DPLUGINDIR="\"$(pkglibdir)\"" -DCONFDIR="\"$(sysconfdir)/twin\""
+AM_CPPFLAGS           = -I$(top_srcdir)/include -I$(top_srcdir)/server -I$(top_srcdir)/libs/vterm/include $(LTDLINCL) -DPLUGINDIR="\"$(pkglibdir)\"" -DCONFDIR="\"$(sysconfdir)/twin\""
 ntwin_CPPFLAGS        = -I$(top_srcdir)/include $(LTDLINCL) -DBINDIR="\"$(bindir)\""
 
 ntwdisplay_SOURCES    = alloc.cpp display.cpp dl_helper.cpp hw.cpp log.cpp missing.cpp palette.cpp
 ntwin_SOURCES         = wrapper.c
 ntwin_server_SOURCES  = alloc.cpp builtin.cpp data.cpp dl.cpp dl_helper.cpp draw.cpp extreg.cpp \
                         hw.cpp hw_multi.cpp log.cpp main.cpp methods.cpp missing.cpp palette.cpp \
+                        term_backend.cpp \
                         obj/all.cpp obj/display.cpp obj/gadget.cpp obj/group.cpp \
                         obj/id.cpp obj/menu.cpp obj/menuitem.cpp obj/module.cpp obj/msg.cpp obj/msgport.cpp \
                         obj/mutex.cpp obj/obj.cpp obj/row.cpp obj/screen.cpp obj/widget.cpp obj/window.cpp \
@@ -28,7 +29,18 @@ ntwin_server_SOURCES  = alloc.cpp builtin.cpp data.cpp dl.cpp dl_helper.cpp draw
                         util.cpp wm.cpp
 
 librcparse_la_SOURCES = rcparse_tab.cpp rcparse_lex.cpp
-libterm_la_SOURCES    = pty.cpp tterm.cpp tty.cpp
+libterm_la_SOURCES    = pty.cpp tterm.cpp tty.cpp \
+                        ../libs/vterm/src/encoding.c \
+                        ../libs/vterm/src/keyboard.c \
+                        ../libs/vterm/src/mouse.c \
+                        ../libs/vterm/src/parser.c \
+                        ../libs/vterm/src/pen.c \
+                        ../libs/vterm/src/screen.c \
+                        ../libs/vterm/src/state.c \
+                        ../libs/vterm/src/unicode.c \
+                        ../libs/vterm/src/vterm.c
+libterm_la_CPPFLAGS   = $(AM_CPPFLAGS) -I$(top_srcdir)/libs/vterm/include
+libterm_la_CFLAGS     = $(AM_CFLAGS) -std=c99
 libsocket_la_SOURCES  = md5.cpp socket.cpp
 
 ntwdisplay_LDFLAGS    = -export-dynamic $(LDFLAGS_BIN_EXPORT_DYNAMIC)

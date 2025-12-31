@@ -10,6 +10,8 @@
 #define TWIN_TTY_H
 
 #include <Tw/datatypes.h>
+
+#include "term_backend.h"
 #include "stl/string.h"
 
 /* tty_data->Flags */
@@ -90,6 +92,9 @@ enum tty_state /*: udat*/ {
 class tty_data {
 public:
   Twindow Win;
+  struct vterm_data *VTerm;
+  term_backend Backend;
+  void (*BackendResize)(tty_data *tty, dat rows, dat cols);
   tty_state State;
   uldat Flags;
   udat Effects;
@@ -113,6 +118,8 @@ public:
   String newName;    /* buffer for xterm set window title escape seq */
   byte TabStop[128]; /* Allow tab stops in positions 0-1023 */
 };
+
+term_backend EnsureTermBackend(Twindow Window);
 
 bool TtyWriteCharset(Twindow Window, uldat Len, const char *charset_bytes);
 bool TtyWriteUtf8(Twindow Window, uldat Len, const char *utf8_bytes);
