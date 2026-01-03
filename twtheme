@@ -1,0 +1,23 @@
+# twtheme - theme overrides for NeoTwin
+#
+# Place this file at ~/.config/twin/twtheme (or $XDG_CONFIG_HOME/twin/twtheme).
+# The theme file is optional; missing file is ignored.
+#
+# Window borders and buttons are still configured in twinrc using Border and Button.
+
+# Default chrome glyphs (CP437 bytes via \xNN; UTF-8 also works if your editor/font supports it).
+Chrome GadgetResize "\xCD\xBC"
+Chrome ScrollBarX   "\xB1\x11\x10"
+Chrome ScrollBarY   "\xB1\x1E\x1F"
+Chrome TabX         "\xDB"
+Chrome TabY         "\xDB"
+Chrome ScreenBack   "\x12\x12"
+
+# Default chrome colors.
+DefaultColors Gadgets        Yellow On Cyan
+DefaultColors Arrows         Green On Blue
+DefaultColors Bars           White On Blue
+DefaultColors Tabs           White On Blue
+DefaultColors Border         White On Blue
+DefaultColors Disabled       Black On Black
+DefaultColors SelectDisabled Black On Black

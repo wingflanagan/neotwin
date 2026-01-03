@@ -18,6 +18,7 @@
 #include "draw.h"
 #include "obj/id.h" // Obj2Id()
 #include "resize.h"
+#include "theme.h"
 #include "util.h"
 #include "wm.h"
 
@@ -899,6 +900,7 @@ static void RCReload(void) {
     DlUnload(RCParseSo);
 
   if (success) {
+    LoadThemeConfig();
     QueuedDrawArea2FullScreen = true;
 
     ResetBorderPattern();

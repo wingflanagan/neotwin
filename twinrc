@@ -135,6 +135,8 @@ AddToFunc _Next ( Lower; Window 1; Focus; )
 # These are not needed... and they override
 # the borders defined by Alternate Font
 #
+# Border/Button strings accept UTF-8; use \xNN for CP437 bytes.
+#
 # Border "*" Active (
 #    "�ͻ"
 #    "� �"
@@ -151,6 +153,12 @@ AddToFunc _Next ( Lower; Window 1; Focus; )
 #
 # note: since twin 0.8.0, all windows must have the same borders.
 # it's no longer possible to differentiate borders depending on the window name
+#
+
+#
+# Theme overrides (chrome glyphs and default colors) are loaded from
+# ~/.config/twin/twtheme (or $XDG_CONFIG_HOME/twin/twtheme).
+# See the sample `twtheme` file in the repository for the supported directives.
 #
 
 #

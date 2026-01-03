@@ -167,6 +167,11 @@
 #include "unaligned.h"
 #include "log.h"
 #include "printk.h" // printk_receive_fd()
+#include "stl/chars.h"
+#include "stl/utf8.h"
+
+#include <ctype.h>
+#include <string.h>
 
 ldat GlobalFlags[4];
 ldat GlobalShadows[2];
@@ -275,19 +280,66 @@ static byte ImmBackground(str name, tcell color, node shape) {
   return tfalse;
 }
 
+static bool HasControlBytes(Chars chars) {
+  const char *p = chars.data();
+  const char *end = p + chars.size();
+  for (; p < end; ++p) {
+    unsigned char c = static_cast<unsigned char>(*p);
+    if (c < 0x20 || c == 0x7F) {
+      return true;
+    }
+  }
+  return false;
+}
+
+static bool DecodeUtf8Runes(Chars chars, trune *out, size_t out_len, size_t *out_count) {
+  Chars remaining = chars;
+  size_t count = 0;
+  while (remaining.size() > 0) {
+    Utf8 u;
+    Chars next;
+    if (!u.parse(remaining, &next)) {
+      return false;
+    }
+    if (count < out_len) {
+      out[count++] = u.rune();
+    }
+    remaining = next;
+  }
+  if (out_count) {
+    *out_count = count;
+  }
+  return true;
+}
+
+static size_t DecodeRunes(str text, trune *out, size_t out_len) {
+  if (!text || !*text || out_len == 0) {
+    return 0;
+  }
+  Chars chars = Chars::from_c(text);
+  size_t count = 0;
+  if (!HasControlBytes(chars) && DecodeUtf8Runes(chars, out, out_len, &count)) {
+    return count;
+  }
+  const unsigned char *p = reinterpret_cast<const unsigned char *>(text);
+  while (*p && count < out_len) {
+    out[count++] = Tutf_CP437_to_UTF_32[*p++];
+  }
+  return count;
+}
+
 static void UnwindBorderShape(node n) {
-  cstr s = NULL;
-  str d = n->bytes = (str)my_malloc(n->x.ctx = 10);
+  trune *out = n->runes = (trune *)my_malloc(sizeof(trune) * 9);
+  size_t count = 0;
   node shape = n->body;
 
-  while (shape) {
-    s = shape->name;
-    while (*s && (d - n->bytes) < 9)
-      *d++ = *s++;
-    if (!*s)
-      shape = shape->next;
+  while (shape && count < 9) {
+    count += DecodeRunes(shape->name, out + count, 9 - count);
+    shape = shape->next;
   }
-  *d = '\0';
+  for (; count < 9; ++count) {
+    out[count] = ' ';
+  }
 }
 
 static byte ImmBorder(str wildcard, ldat flag, node shape) {
@@ -317,9 +369,13 @@ static ldat FreeButtonPos(ldat n, ldat lr) {
 }
 
 static byte ImmButton(ldat n, str shape, ldat lr, ldat flag, ldat pos) {
-  if (n >= 0 && n < BUTTON_MAX && strlen(shape) >= 2) {
-    All->ButtonVec[n].shape[0] = Tutf_CP437_to_UTF_32[(byte)shape[0]];
-    All->ButtonVec[n].shape[1] = Tutf_CP437_to_UTF_32[(byte)shape[1]];
+  if (n >= 0 && n < BUTTON_MAX && shape) {
+    trune glyphs[2] = {0, 0};
+    if (DecodeRunes(shape, glyphs, 2) < 2) {
+      return tfalse;
+    }
+    All->ButtonVec[n].shape[0] = glyphs[0];
+    All->ButtonVec[n].shape[1] = glyphs[1];
     if (lr == FL_RIGHT)
       pos = -pos;
     if (flag == '+' || flag == '-')

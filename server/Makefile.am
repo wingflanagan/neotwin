@@ -26,7 +26,7 @@ ntwin_server_SOURCES  = alloc.cpp builtin.cpp data.cpp dl.cpp dl_helper.cpp draw
                         obj/id.cpp obj/menu.cpp obj/menuitem.cpp obj/module.cpp obj/msg.cpp obj/msgport.cpp \
                         obj/mutex.cpp obj/obj.cpp obj/row.cpp obj/screen.cpp obj/widget.cpp obj/window.cpp \
                         printk.cpp privilege.cpp rcopt.cpp rcrun.cpp remote.cpp resize.cpp shm.cpp scroller.cpp \
-                        util.cpp wm.cpp
+                        theme.cpp util.cpp wm.cpp
 
 librcparse_la_SOURCES = rcparse_tab.cpp rcparse_lex.cpp
 libterm_la_SOURCES    = pty.cpp tterm.cpp tty.cpp \
